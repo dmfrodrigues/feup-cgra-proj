@@ -6,6 +6,8 @@ serialInclude(
     [
         '../lib/CGF.js',
         'MyCylinder.js',
+        'MyPyramid.js',
+        'MyVehicle.js',
         'MyScene.js',
         'MyInterface.js',
         'MySphere.js', 
