@@ -32,8 +32,8 @@ class MyScene extends CGFscene {
         this.cubeMap = new MyCubeMap(this);
 
         //Objects connected to MyInterface
-        this.displayAxis = true;
-        this.displaySphere = false;
+        this.displayAxis    = true;
+        this.displaySphere  = false;
         this.displayVehicle = false;
         this.displayCubeMap = true;
 

@@ -24,9 +24,25 @@ class MyCubeMap extends CGFobject {
         var rightPath;
         var frontPath;
         var backPath;
-        if (!this.scene.altCubeMap)
+        var altMap = true;
+
+        if (!altMap)
         {
-            topPath = 'images/split_cubemap/top.png'
+            topPath    = 'images/split_cubemap/top.png';
+            bottomPath = 'images/split_cubemap/bottom.png';
+            leftPath   = 'images/split_cubemap/left.png';
+            rightPath  = 'images/split_cubemap/right.png';
+            frontPath  = 'images/split_cubemap/front.png';
+            backPath   = 'images/split_cubemap/back.png';
+        }
+        else
+        {
+            topPath    = 'images/split_cubemap2/top.png';
+            bottomPath = 'images/split_cubemap2/bottom.png';
+            leftPath   = 'images/split_cubemap2/left.png';
+            rightPath  = 'images/split_cubemap2/right.png';
+            frontPath  = 'images/split_cubemap2/front.png';
+            backPath   = 'images/split_cubemap2/back.png';
         }
 
 
@@ -88,7 +104,6 @@ class MyCubeMap extends CGFobject {
             this.scene.translate(0,+0.5,0);
             this.scene.rotate(-90.0*Math.PI/180, 1, 0, 0);
             this.materials.top.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Top.display();
         } this.scene.popMatrix();
         //Bot
@@ -97,14 +112,12 @@ class MyCubeMap extends CGFobject {
             this.scene.translate(0,-0.5,0);
             this.scene.rotate(+90.0*Math.PI/180, 1, 0, 0);
             this.materials.bottom.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Bot.display();
         } this.scene.popMatrix();
         //Lef
         this.scene.pushMatrix(); {
             this.scene.translate(0,0,+0.5);
             this.materials.left.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Lef.display();
         } this.scene.popMatrix();
         //Rig
@@ -112,7 +125,6 @@ class MyCubeMap extends CGFobject {
             this.scene.translate(0,0,-0.5);
             this.scene.rotate(+180.0*Math.PI/180, 0, 1, 0);
             this.materials.right.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Rig.display();
         } this.scene.popMatrix();
         //Fro
@@ -120,7 +132,6 @@ class MyCubeMap extends CGFobject {
             this.scene.translate(+0.5, 0, 0);
             this.scene.rotate(+90.0*Math.PI/180, 0, 1, 0);
             this.materials.front.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Fro.display();
         } this.scene.popMatrix();
         //Bac
@@ -128,7 +139,6 @@ class MyCubeMap extends CGFobject {
             this.scene.translate(-0.5, 0, 0);
             this.scene.rotate(-90.0*Math.PI/180, 0, 1, 0);
             this.materials.back.apply();
-            //this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
             this.Bac.display();
         } this.scene.popMatrix();  
     }
