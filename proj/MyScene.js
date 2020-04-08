@@ -34,6 +34,11 @@ class MyScene extends CGFscene {
         this.displayAxis = true;
         this.displaySphere = true;
         this.displayVehicle = false;
+
+        //Textures
+        this.mapMaterial = new CGFappearance(this);
+        this.mapMaterial.loadTexture('images/earth.jpg');
+        this.mapMaterial.setTextureWrap('REPEAT','REPEAT');
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -78,7 +83,11 @@ class MyScene extends CGFscene {
         //this.incompleteSphere.display();
 
         if (this.displayVehicle) this.vehicle.display();
-        if (this.displaySphere)  this.sphere.display();
+        if (this.displaySphere) 
+        {
+            this.mapMaterial.apply();
+            this.sphere.display();
+        } 
 
         // ---- END Primitive drawing section
     }
