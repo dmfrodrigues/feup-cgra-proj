@@ -29,11 +29,13 @@ class MyScene extends CGFscene {
         this.cylinder = new MyCylinder(this, 50);
         this.vehicle = new MyVehicle(this);
         this.sphere = new MySphere(this,50,25);
+        this.cubeMap = new MyCubeMap(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
-        this.displaySphere = true;
+        this.displaySphere = false;
         this.displayVehicle = false;
+        this.displayCubeMap = true;
 
         //Textures
         this.mapMaterial = new CGFappearance(this);
@@ -83,6 +85,7 @@ class MyScene extends CGFscene {
         //this.incompleteSphere.display();
 
         if (this.displayVehicle) this.vehicle.display();
+        if (this.displayCubeMap) this.cubeMap.display();
         if (this.displaySphere) 
         {
             this.mapMaterial.apply();

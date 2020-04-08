@@ -10,7 +10,9 @@ serialInclude(
         'MyVehicle.js',
         'MyScene.js',
         'MyInterface.js',
-        'MySphere.js', 
+        'MySphere.js',
+        'MyCubeMap.js', 
+        'MyQuad.js',
 
 main=function()
 {
