@@ -10,6 +10,7 @@ class MySphere extends CGFobject {
     this.latDivs = stacks * 2;
     this.longDivs = slices;
 
+
     this.initBuffers();
   }
 

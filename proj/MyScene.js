@@ -28,9 +28,12 @@ class MyScene extends CGFscene {
         this.incompleteSphere = new MySphere(this, 16, 8);
         this.cylinder = new MyCylinder(this, 50);
         this.vehicle = new MyVehicle(this);
+        this.sphere = new MySphere(this,50,50);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
+        this.displaySphere = true;
+        this.displayVehicle = false;
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -74,7 +77,8 @@ class MyScene extends CGFscene {
         //This sphere does not have defined texture coordinates
         //this.incompleteSphere.display();
 
-        this.vehicle.display();
+        if (this.displayVehicle) this.vehicle.display();
+        if (this.displaySphere)  this.sphere.display();
 
         // ---- END Primitive drawing section
     }
