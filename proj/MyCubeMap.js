@@ -54,7 +54,7 @@ class MyCubeMap extends CGFobject {
         this.materials.top.setSpecular(0, 0, 0, 1);
         this.materials.top.setShininess(10.0);
         this.materials.top.loadTexture(topPath);
-        this.materials.top.setTextureWrap('REPEAT','REPEAT');
+        this.materials.top.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.right = new CGFappearance(this.scene);
         this.materials.right.setAmbient(1, 1, 1, 1);
@@ -62,7 +62,7 @@ class MyCubeMap extends CGFobject {
         this.materials.right.setSpecular(0, 0, 0, 1);
         this.materials.right.setShininess(10.0);
         this.materials.right.loadTexture(rightPath);
-        this.materials.right.setTextureWrap('REPEAT','REPEAT');
+        this.materials.right.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.left = new CGFappearance(this.scene);
         this.materials.left.setAmbient(1, 1, 1, 1);
@@ -70,7 +70,7 @@ class MyCubeMap extends CGFobject {
         this.materials.left.setSpecular(0, 0, 0, 1);
         this.materials.left.setShininess(10.0);
         this.materials.left.loadTexture(leftPath);
-        this.materials.left.setTextureWrap('REPEAT','REPEAT');
+        this.materials.left.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.back = new CGFappearance(this.scene);
         this.materials.back.setAmbient(1, 1, 1, 1);
@@ -78,7 +78,7 @@ class MyCubeMap extends CGFobject {
         this.materials.back.setSpecular(0, 0, 0, 1);
         this.materials.back.setShininess(10.0);
         this.materials.back.loadTexture(backPath);
-        this.materials.back.setTextureWrap('REPEAT','REPEAT');
+        this.materials.back.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.front = new CGFappearance(this.scene);
         this.materials.front.setAmbient(1, 1, 1, 1);
@@ -86,7 +86,7 @@ class MyCubeMap extends CGFobject {
         this.materials.front.setSpecular(0, 0, 0, 1);
         this.materials.front.setShininess(10.0);
         this.materials.front.loadTexture(frontPath);
-        this.materials.front.setTextureWrap('REPEAT','REPEAT');
+        this.materials.front.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.bottom = new CGFappearance(this.scene);
         this.materials.bottom.setAmbient(1, 1, 1, 1);
@@ -94,7 +94,7 @@ class MyCubeMap extends CGFobject {
         this.materials.bottom.setSpecular(0, 0, 0, 1);
         this.materials.bottom.setShininess(10.0);
         this.materials.bottom.loadTexture(bottomPath);
-        this.materials.bottom.setTextureWrap('REPEAT','REPEAT');
+        this.materials.bottom.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
     }
     display(){
         this.scene.scale(50,50,50);
