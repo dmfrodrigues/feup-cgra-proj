@@ -41,6 +41,10 @@ class MyScene extends CGFscene {
         this.mapMaterial = new CGFappearance(this);
         this.mapMaterial.loadTexture('images/earth.jpg');
         this.mapMaterial.setTextureWrap('REPEAT','REPEAT');
+
+        //Speed, angle
+        this.vel_inc = 0.01;
+        this.angle_inc = Math.PI/36;
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -86,6 +90,7 @@ class MyScene extends CGFscene {
         //this.incompleteSphere.display();
 
         if (this.displayVehicle) this.vehicle.display();
+        this.vehicle.update();
         if (this.displayCubeMap) this.cubeMap.display();
         if (this.displaySphere) 
         {
@@ -103,11 +108,22 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyW")){
             text+=" W ";
             keysPressed=true;
-       }
-       if (this.gui.isKeyPressed("KeyS")){
-           text+=" S ";
-           keysPressed=true;
-       }
+            this.vehicle.accelerate(this.vel_inc);
+        }
+        if (this.gui.isKeyPressed("KeyS")){
+            text+=" S ";
+            keysPressed=true;
+            this.vehicle.accelerate(-this.vel_inc);
+        }
+        if(this.gui.isKeyPressed("KeyA")){
+            this.vehicle.turn(this.angle_inc);
+        }
+        if(this.gui.isKeyPressed("KeyD")){
+            this.vehicle.turn(-this.angle_inc);
+        }
+        if(this.gui.isKeyPressed("KeyR")){
+            this.vehicle.reset();
+        }
        if (keysPressed) console.log(text);
     }
 }
