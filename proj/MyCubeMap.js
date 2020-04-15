@@ -14,38 +14,17 @@ class MyCubeMap extends CGFobject {
         this.Fro = new MyQuad(this.scene);
         this.Bac = new MyQuad(this.scene);
 
+        this.topPath    = 'images/split_cubemap/top.png';
+        this.bottomPath = 'images/split_cubemap/bottom.png';
+        this.leftPath   = 'images/split_cubemap/left.png';
+        this.rightPath  = 'images/split_cubemap/right.png';
+        this.frontPath  = 'images/split_cubemap/front.png';
+        this.backPath   = 'images/split_cubemap/back.png';
+
         this.initMaterials();
     }
     initMaterials()
-    {
-        var topPath;
-        var bottomPath;
-        var leftPath;
-        var rightPath;
-        var frontPath;
-        var backPath;
-        var altMap = true;
-
-        if (!altMap)
-        {
-            topPath    = 'images/split_cubemap/top.png';
-            bottomPath = 'images/split_cubemap/bottom.png';
-            leftPath   = 'images/split_cubemap/left.png';
-            rightPath  = 'images/split_cubemap/right.png';
-            frontPath  = 'images/split_cubemap/front.png';
-            backPath   = 'images/split_cubemap/back.png';
-        }
-        else
-        {
-            topPath    = 'images/split_cubemap2/top.png';
-            bottomPath = 'images/split_cubemap2/bottom.png';
-            leftPath   = 'images/split_cubemap2/left.png';
-            rightPath  = 'images/split_cubemap2/right.png';
-            frontPath  = 'images/split_cubemap2/front.png';
-            backPath   = 'images/split_cubemap2/back.png';
-        }
-
-
+    {  
         this.materials = {};
 
         this.materials.top = new CGFappearance(this.scene);
@@ -53,7 +32,7 @@ class MyCubeMap extends CGFobject {
         this.materials.top.setDiffuse(0, 0, 0, 1);
         this.materials.top.setSpecular(0, 0, 0, 1);
         this.materials.top.setShininess(10.0);
-        this.materials.top.loadTexture(topPath);
+        this.materials.top.loadTexture(this.topPath);
         this.materials.top.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.right = new CGFappearance(this.scene);
@@ -61,7 +40,7 @@ class MyCubeMap extends CGFobject {
         this.materials.right.setDiffuse(0, 0, 0, 1);
         this.materials.right.setSpecular(0, 0, 0, 1);
         this.materials.right.setShininess(10.0);
-        this.materials.right.loadTexture(rightPath);
+        this.materials.right.loadTexture(this.rightPath);
         this.materials.right.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.left = new CGFappearance(this.scene);
@@ -69,7 +48,7 @@ class MyCubeMap extends CGFobject {
         this.materials.left.setDiffuse(0, 0, 0, 1);
         this.materials.left.setSpecular(0, 0, 0, 1);
         this.materials.left.setShininess(10.0);
-        this.materials.left.loadTexture(leftPath);
+        this.materials.left.loadTexture(this.leftPath);
         this.materials.left.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.back = new CGFappearance(this.scene);
@@ -77,7 +56,7 @@ class MyCubeMap extends CGFobject {
         this.materials.back.setDiffuse(0, 0, 0, 1);
         this.materials.back.setSpecular(0, 0, 0, 1);
         this.materials.back.setShininess(10.0);
-        this.materials.back.loadTexture(backPath);
+        this.materials.back.loadTexture(this.backPath);
         this.materials.back.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.front = new CGFappearance(this.scene);
@@ -85,7 +64,7 @@ class MyCubeMap extends CGFobject {
         this.materials.front.setDiffuse(0, 0, 0, 1);
         this.materials.front.setSpecular(0, 0, 0, 1);
         this.materials.front.setShininess(10.0);
-        this.materials.front.loadTexture(frontPath);
+        this.materials.front.loadTexture(this.frontPath);
         this.materials.front.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
         this.materials.bottom = new CGFappearance(this.scene);
@@ -93,7 +72,7 @@ class MyCubeMap extends CGFobject {
         this.materials.bottom.setDiffuse(0, 0, 0, 1);
         this.materials.bottom.setSpecular(0, 0, 0, 1);
         this.materials.bottom.setShininess(10.0);
-        this.materials.bottom.loadTexture(bottomPath);
+        this.materials.bottom.loadTexture(this.bottomPath);
         this.materials.bottom.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
     }
     display(){
@@ -141,5 +120,30 @@ class MyCubeMap extends CGFobject {
             this.materials.back.apply();
             this.Bac.display();
         } this.scene.popMatrix();  
+    }
+    updateMaterials()
+    {
+        this.materials.top.loadTexture(this.topPath);
+        this.materials.bottom.loadTexture(this.bottomPath);
+        this.materials.left.loadTexture(this.leftPath);
+        this.materials.right.loadTexture(this.rightPath);
+        this.materials.front.loadTexture(this.frontPath);
+        this.materials.back.loadTexture(this.backPath);
+    }
+    updateTexture(scene)
+    {
+        var num;
+        if (scene.selectedTexture == 0) num = '';
+        else num = (Number(scene.selectedTexture)+1).toString();
+        
+        this.topPath    = 'images/split_cubemap'.concat(num).concat('/top.png');
+        this.bottomPath = 'images/split_cubemap'.concat(num).concat('/bottom.png');
+        this.leftPath   = 'images/split_cubemap'.concat(num).concat('/left.png');
+        this.rightPath  = 'images/split_cubemap'.concat(num).concat('/right.png');
+        this.frontPath  = 'images/split_cubemap'.concat(num).concat('/front.png');
+        this.backPath   = 'images/split_cubemap'.concat(num).concat('/back.png');
+
+        this.updateMaterials();
+        this.display();
     }
 }

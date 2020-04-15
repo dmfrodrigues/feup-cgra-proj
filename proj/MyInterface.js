@@ -24,6 +24,10 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'speedFactor', 0.1, 3).name('Speed Factor').onChange(this.scene.onSpeedFactorChange.bind(this.scene));
         this.gui.add(this.scene, 'scaleFactor', 0.5, 3).name('Scale Factor').onChange(this.scene.onScaleFactorChange.bind(this.scene));
 
+        //Cube Map texture dropdown
+        this.gui.add(this.scene, 'selectedTexture', this.scene.textureIds).name('Selected Cube Map Texture').onChange(this.scene.updateCubeMapTexture.bind(this.scene));
+        
+        //Call init fuction for keys
         this.initKeys();
 
         return true;
