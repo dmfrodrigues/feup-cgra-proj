@@ -42,6 +42,10 @@ class MyScene extends CGFscene {
         this.mapMaterial.loadTexture('images/earth.jpg');
         this.mapMaterial.setTextureWrap('REPEAT','REPEAT');
 
+        //Cube Map Textures and related variables
+        this.selectedTexture = 0;
+        this.textureIds = {'Forest': 0, 'Desert': 1};
+
         //Speed, angle
         this.vel_inc = 0.01;
         this.angle_inc = Math.PI/36;
@@ -66,7 +70,11 @@ class MyScene extends CGFscene {
         //To be done...
         this.checkKeys();
     }
-
+    //called when user interacts with te
+    updateCubeMapTexture()
+    {
+        this.cubeMap.updateTexture(this);
+    }
     display() {
         // ---- BEGIN Background, camera and axis setup
         // Clear image and depth buffer everytime we update the scene
