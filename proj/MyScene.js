@@ -78,7 +78,7 @@ class MyScene extends CGFscene {
         //To be done...
         this.checkKeys();
     }
-    //called when user interacts with te
+    //called when user interacts with the cube map texture dropdown
     updateCubeMapTexture()
     {
         this.cubeMap.updateTexture(this);
