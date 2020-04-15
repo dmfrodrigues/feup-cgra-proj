@@ -36,6 +36,8 @@ class MyScene extends CGFscene {
         this.displaySphere  = false;
         this.displayVehicle = false;
         this.displayCubeMap = true;
+        this.speedFactor    = 1.0;
+        this.scaleFactor    = 1.0;
 
         //Textures
         this.mapMaterial = new CGFappearance(this);
@@ -60,6 +62,12 @@ class MyScene extends CGFscene {
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
+    }
+    onSpeedFactorChange(v){
+        this.vehicle.setSpeedFactor(this.speedFactor);
+    }
+    onScaleFactorChange(v){
+        this.vehicle.setScaleFactor(this.scaleFactor);
     }
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
@@ -88,15 +96,17 @@ class MyScene extends CGFscene {
 
         //This sphere does not have defined texture coordinates
         //this.incompleteSphere.display();
-
+            
         if (this.displayVehicle) this.vehicle.display();
         this.vehicle.update();
+
         if (this.displayCubeMap) this.cubeMap.display();
         if (this.displaySphere) 
         {
             this.mapMaterial.apply();
             this.sphere.display();
-        } 
+        }
+
 
         // ---- END Primitive drawing section
     }
@@ -123,6 +133,8 @@ class MyScene extends CGFscene {
         }
         if(this.gui.isKeyPressed("KeyR")){
             this.vehicle.reset();
+            this.speedFactor = 1.0;
+            this.scaleFactor = 1.0;
         }
        if (keysPressed) console.log(text);
     }
