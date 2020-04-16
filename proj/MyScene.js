@@ -53,6 +53,8 @@ class MyScene extends CGFscene {
         this.angle_inc = Math.PI/36;
     }
     initLights() {
+        this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
+
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[0].enable();
