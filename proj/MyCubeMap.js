@@ -76,6 +76,7 @@ class MyCubeMap extends CGFobject {
         this.materials.bottom.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
     }
     display(){
+        this.scene.pushMatrix();
         this.scene.scale(50,50,50);
         //Top
         this.scene.pushMatrix(); {
@@ -119,7 +120,8 @@ class MyCubeMap extends CGFobject {
             this.scene.rotate(-90.0*Math.PI/180, 0, 1, 0);
             this.materials.back.apply();
             this.Bac.display();
-        } this.scene.popMatrix();  
+        } this.scene.popMatrix(); 
+        this.scene.popMatrix();
     }
     updateMaterials()
     {
