@@ -33,6 +33,7 @@ class MyScene extends CGFscene {
 
         //Objects connected to MyInterface
         this.displayAxis    = true;
+        this.displayCylinder = false;
         this.displaySphere  = false;
         this.displayVehicle = false;
         this.displayCubeMap = true;
@@ -106,6 +107,11 @@ class MyScene extends CGFscene {
 
         //This sphere does not have defined texture coordinates
         //this.incompleteSphere.display();
+
+        if(this.displayCylinder){
+            this.mapMaterial.apply();
+            this.cylinder.display();
+        }
             
         if (this.displayVehicle) this.vehicle.display();
         this.vehicle.update();

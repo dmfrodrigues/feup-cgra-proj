@@ -18,31 +18,27 @@ class MyCylinder extends CGFobject {
      */
     initBuffers() {
         this.vertices = [];
-        this.indices = [];
         this.normals = [];
+        this.texCoords = [];
+        this.indices = [];
 
         const Ymin = 0;
         const Ymax = 1;
 
         // Vertices and normals
         const amp = 2*Math.PI;
-        for (let i = 0; i < this.slices; i++) {
+        for (let i = 0; i <= this.slices; i++) {
             let phi = i*amp/this.slices
             let x   =  Math.cos(phi);
             let z   = -Math.sin(phi);
-            this.vertices.push(x, Ymin, z);
-            this.vertices.push(x, Ymax, z);
-            this.normals.push(x, 0, z);
-            this.normals.push(x, 0, z);
+            this.vertices.push(x, Ymin, z); this.normals.push(x, 0, z); this.texCoords.push(i/this.slices, 1);
+            this.vertices.push(x, Ymax, z); this.normals.push(x, 0, z); this.texCoords.push(i/this.slices, 0);
         }
         //Triangles
-        for(let i = 0; i < this.slices-1; i++){
+        for(let i = 0; i < this.slices; i++){
             this.indices.push(2*i+1, 2*i, 2*i+2);
             this.indices.push(2*i+1, 2*i+2, 2*i+3);            
         }
-        let i = this.slices-1;
-        this.indices.push(2*i+1, 2*i, 0);
-        this.indices.push(2*i+1, 0, 1);
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
