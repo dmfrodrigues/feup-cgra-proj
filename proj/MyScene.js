@@ -30,7 +30,7 @@ class MyScene extends CGFscene {
         this.vehicle = new MyVehicle(this);
         this.sphere = new MySphere(this,50,25);
         this.cubeMap = new MyCubeMap(this);
-        this.terrain = new MyPlane(this);
+        this.terrain = new MyTerrain(this);
 
         //Objects connected to MyInterface
         this.displayAxis    = true;
@@ -119,7 +119,11 @@ class MyScene extends CGFscene {
         this.vehicle.update();
 
         if (this.displayCubeMap) this.cubeMap.display();
-        if (this.displayTerrain) this.terrain.display();
+        if (this.displayTerrain)
+        {
+            
+            this.terrain.display();
+        } 
         if (this.displaySphere) 
         {
             this.mapMaterial.apply();
