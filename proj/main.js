@@ -13,7 +13,8 @@ serialInclude(
         'MySphere.js',
         'MyCubeMap.js', 
         'MyQuad.js',
-
+        'MyTerrain.js',
+        'MyPlane.js',
 main=function()
 {
     var app = new CGFapplication(document.body);
