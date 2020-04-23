@@ -1,5 +1,5 @@
 /**
- * MyUnitCubeQuad
+ * MyCubeMap
  * @constructor
  * @param scene - Reference to MyScene object
  */
