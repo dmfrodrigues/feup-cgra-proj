@@ -119,17 +119,15 @@ class MyScene extends CGFscene {
         this.vehicle.update();
 
         if (this.displayCubeMap) this.cubeMap.display();
-        if (this.displayTerrain)
-        {
-            
-            this.terrain.display();
-        } 
+        
         if (this.displaySphere) 
         {
             this.mapMaterial.apply();
             this.sphere.display();
         }
+        if (this.displayTerrain) this.terrain.display();
         
+        this.setActiveShader(this.defaultShader);
 
         // ---- END Primitive drawing section
     }
