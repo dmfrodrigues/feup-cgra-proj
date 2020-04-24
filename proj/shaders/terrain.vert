@@ -8,6 +8,7 @@ uniform mat4 uNMatrix;
 
 varying vec2 vTextureCoord;
 
+uniform sampler2D uSampler;
 uniform sampler2D uSampler2;
 uniform float normScale;
 
@@ -19,7 +20,7 @@ void main() {
 
 	vec3 inc_vec = vec3(0.0,0.0,height_increase);
 
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+inc_vec*5.0, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+inc_vec*1.0, 1.0);
 
 	vTextureCoord = aTextureCoord;
 }
