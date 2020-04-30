@@ -11,7 +11,7 @@ class MyTerrain extends CGFobject {
         this.shader = new CGFshader(this.scene.gl, "shaders/terrain.vert", "shaders/terrain.frag");
         
         this.terrainTexture = new CGFtexture(this.scene,"images/terrain.jpg");
-        this.heightMap = new CGFtexture(this.scene,"images/heightmap.jpg");
+        this.heightMap = new CGFtexture(this.scene,"images/heightmap2.jpg");
         
         this.appearance = new CGFappearance(this.scene);
         this.appearance.setAmbient(0.3, 0.3, 0.3, 1);
@@ -26,14 +26,16 @@ class MyTerrain extends CGFobject {
     init()
     {
         this.terrainTexture.bind(0);
-        this.heightMap.bind(1);
+        
         this.shader.setUniformsValues({ uSampler: 0 });
         this.shader.setUniformsValues({ uSampler2: 1 });
     }
     display()
-    {
-        this.appearance.apply();
+    {   
+        
         this.scene.setActiveShader(this.shader);
+        this.appearance.apply();
+        this.heightMap.bind(1);
 
         this.scene.pushMatrix();
         this.scene.scale(50,8,50);

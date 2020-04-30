@@ -20,7 +20,7 @@ void main() {
 
 	vec3 inc_vec = vec3(0.0,0.0,height_increase);
 
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+inc_vec*1.0, 1.0);
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+inc_vec, 1.0);
 
 	vTextureCoord = aTextureCoord;
 }
