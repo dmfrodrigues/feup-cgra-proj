@@ -369,53 +369,62 @@ class MyVehicle extends CGFobject {
     }
     reset(){
         this.dir = {
-            az: 0
+            az: {
+                theta: 0,
+                curvature: 0
+            }
         };
-        this.dirturn = {
-            az: 0
-        }
         this.pos   = {
             x: 0,
             y: 10,
-            z: 0
+            z: 0,
+            v: 0,
+            a: 0
         };
-        this.speed   = 0;
         this.speedFactor = 1.0;
         this.scaleFactor = 1.0;
     }
     // Setters
     setSpeedFactor(speedFactor){ this.speedFactor = speedFactor; }
     setScaleFactor(scaleFactor){ this.scaleFactor = scaleFactor; }
-    setAzimuthTurn(turn){ this.dirturn.az = turn; this.airship.setTurnAngle(this.dirturn.az); }
-    turn(val){ this.setAzimuthTurn(val); }
-    setSpeed(speed){ this.speed = speed; this.airship.setSpeed(this.getRealSpeed()); }
-    accelerate(val){ this.setSpeed(this.speed + val); }
+    setAzimuthCurvature(k){ this.dir.az.curvature = k; this.airship.setTurnAngle(this.dir.az.curvature/30); }
+    turn(val){ this.setAzimuthCurvature(val); }
+    setSpeed(speed){ this.pos.v = speed; this.airship.setSpeed(this.getRealSpeed()); }
+    setAcceleration(a){ this.pos.a = a; }
+    accelerate(val){ this.setAcceleration(val); }
     // Getters
-    getRealSpeed(){ return this.speed * this.speedFactor; }
+    getRealSpeed(){ return this.pos.v * this.speedFactor; }
     // Other functions
     update(){
-        let t = Date.now()/1000;
-        if(this.update_prevtime == []) this.update_prevtime = t;
-        let dt = t - this.update_prevtime;
-
-        this.dir.az += this.dirturn.az;
-        
-
-        let dr = {
-            x: this.getRealSpeed() * Math.sin(this.dir.az) * dt,
-            y: 0,
-            z: this.getRealSpeed() * Math.cos(this.dir.az) * dt
-        };
-        this.pos.x += dr.x;
-        this.pos.y += dr.y;
-        this.pos.z += dr.z;
-
+        /* Time */
+        let t, dt; {
+            t = Date.now()/1000;
+            if(this.update_prevtime == []) this.update_prevtime = t;
+            dt = t - this.update_prevtime;
+        }
+        /* Speed update */ {
+            this.setSpeed(this.pos.v + this.pos.a * dt);
+        }
+        /* Azimuth update */ {
+            this.dir.az.theta += this.pos.v * this.dir.az.curvature * dt;
+        }
+        /* Position update */ {
+                let dr = {
+                x: this.getRealSpeed() * Math.sin(this.dir.az.theta) * dt,
+                y: 0,
+                z: this.getRealSpeed() * Math.cos(this.dir.az.theta) * dt
+            };
+            this.pos.x += dr.x;
+            this.pos.y += dr.y;
+            this.pos.z += dr.z;
+        }
+        /* Update previous time */
         this.update_prevtime = t;
     }
     display() {
         this.scene.pushMatrix();{
             this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
-            this.scene.rotate(this.dir.az, 0, 1, 0);
+            this.scene.rotate(this.dir.az.theta, 0, 1, 0);
             
             this.scene.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
 

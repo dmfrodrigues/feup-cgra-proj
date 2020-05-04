@@ -52,8 +52,8 @@ class MyScene extends CGFscene {
         this.textureIds = {'Forest': 0, 'Desert': 1};
 
         //Speed, angle
-        this.SPEED_INCREMENT = 0.05;
-        this.ANGLE_INCREMENT = Math.PI/36/5;
+        this.ACCELERATION = 0.5;
+        this.CURVATURE = 0.5;
     }
     initLights() {
         this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
@@ -134,14 +134,14 @@ class MyScene extends CGFscene {
         //Check for key codes e.g. in https://keycode.info/
         /* Accelerate */{
             let accel = 0;
-            if (this.gui.isKeyPressed("KeyW")) accel += this.SPEED_INCREMENT;
-            if (this.gui.isKeyPressed("KeyS")) accel -= this.SPEED_INCREMENT;
+            if (this.gui.isKeyPressed("KeyW")) accel += this.ACCELERATION;
+            if (this.gui.isKeyPressed("KeyS")) accel -= this.ACCELERATION;
             this.vehicle.accelerate(accel)
         }
         /* Angle */{
             let angle = 0;
-            if(this.gui.isKeyPressed("KeyA")) angle += this.ANGLE_INCREMENT;
-            if(this.gui.isKeyPressed("KeyD")) angle -= this.ANGLE_INCREMENT;
+            if(this.gui.isKeyPressed("KeyA")) angle += this.CURVATURE;
+            if(this.gui.isKeyPressed("KeyD")) angle -= this.CURVATURE;
             this.vehicle.turn(angle);
         }
         // Reset
