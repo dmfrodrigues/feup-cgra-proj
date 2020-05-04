@@ -368,12 +368,25 @@ class MyVehicle extends CGFobject {
         this.turn_prevtime = [];
         this.airship = new Airship(this.scene);
     }
-    setSpeedFactor(speedFactor){
-        this.speedFactor = speedFactor;
+    reset(){
+        this.angle = 0;
+        this.pos   = {x: 0, y: 10, z: 0};
+        this.vel   = 0;
+        this.speedFactor = 1.0;
+        this.scaleFactor = 1.0;
     }
-    setScaleFactor(scaleFactor){
-        this.scaleFactor = scaleFactor;
+    // Setters
+    setSpeedFactor(speedFactor){ this.speedFactor = speedFactor; }
+    setScaleFactor(scaleFactor){ this.scaleFactor = scaleFactor; }
+    turn(val){
+        this.angle += val;
+        this.turn_val = val;
+        this.turn_prevtime = Date.now()/1000;
     }
+    accelerate(val){
+        this.vel += val;
+    }
+    // Other functions
     display() {
         let t = Date.now()/1000;
         let Dt_turn = t-this.turn_prevtime;
@@ -409,20 +422,5 @@ class MyVehicle extends CGFobject {
         this.pos.z += dr.z;
 
         this.update_prevtime = t;
-    }
-    turn(val){
-        this.angle += val;
-        this.turn_val = val;
-        this.turn_prevtime = Date.now()/1000;
-    }
-    accelerate(val){
-        this.vel += val;
-    }
-    reset(){
-        this.angle = 0;
-        this.pos   = {x: 0, y: 10, z: 0};
-        this.vel   = 0;
-        this.speedFactor = 1.0;
-        this.scaleFactor = 1.0;
     }
 }
