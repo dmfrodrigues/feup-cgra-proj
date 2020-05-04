@@ -68,15 +68,37 @@ class AirshipMotor extends CGFobject {
         this.materials.metal2.loadTexture(this.metalPath);
         this.materials.metal2.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
+        this.materials.engine = new CGFappearance(this.scene);
+        this.materials.engine.setAmbient(0.8, 0.8, 0.8, 1);
+        this.materials.engine.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.materials.engine.setSpecular(0.1, 0.1, 0.1, 1);
+        
         this.reset();
+
+        this.update_prevtime = 0;
     }
     reset(){
-        this.angle = 30*Math.PI/180;
+        this.angle = 0;
+        this.angle_speed = 0;
+    }
+    setSpeed(angspeed){
+        this.angle_speed = angspeed;
+    }
+    update(){
+        let t = Date.now()/1000;
+        let Dt = t - this.update_prevtime;
+
+        this.angle += Dt * this.angle_speed;
+
+        this.update_prevtime = t;
     }
     display() {
+        this.update();
+
         this.scene.pushMatrix();{
             this.scene.scale(this.radius/3, this.radius/3, this.length/2);
             this.scene.rotate(90*Math.PI/180, 1, 0, 0);
+            this.materials.engine.apply();
             this.motor.display();
         }this.scene.popMatrix();
         this.scene.pushMatrix();{
@@ -191,6 +213,9 @@ class Gondola extends CGFobject {
         this.materials = {};
         this.materials.gondola = new CGFappearance(this.scene);
         this.materials.gondola.loadTexture(this.paths.gondola);
+        this.materials.gondola.setAmbient(0.8, 0.8, 0.8, 1);
+        this.materials.gondola.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.materials.gondola.setSpecular(0.1, 0.1, 0.1, 1);
     }
     display() {
         this.scene.pushMatrix();{
@@ -230,8 +255,59 @@ class AirshipGondola extends CGFobject {
             this.motor.display();
         }this.scene.popMatrix();
     }
+    setSpeed(speed){
+        this.motor.setSpeed(50*speed);
+    }
     getRadius(){ return this.radius; }
     getHeight(){ return this.height; }
+}
+
+class AirshipRudder extends CGFobject {
+    constructor(scene, yscale, zscale){
+        super(scene);
+        this.scene = scene;
+        this.yscale = yscale;
+        this.zscale = zscale;
+        this.reset();
+        this.initBuffers();
+    }
+    initBuffers(){
+        this.vertices = [];
+        this.indices = [];
+        this.normals = [];
+        this.vertices.push(0, 0*this.yscale,  0*this.zscale); this.normals.push(1, 0, 0);
+        this.vertices.push(0, 0*this.yscale, -1*this.zscale); this.normals.push(1, 0, 0);
+        this.vertices.push(0, 1*this.yscale, -1*this.zscale); this.normals.push(1, 0, 0);
+        this.vertices.push(0, 1*this.yscale,  0*this.zscale); this.normals.push(1, 0, 0);
+        this.vertices.push(0, 0*this.yscale,  2*this.zscale); this.normals.push(1, 0, 0);
+        this.indices.push(0, 1, 2);
+        this.indices.push(2, 3, 0);
+        this.indices.push(0, 3, 4);
+        this.vertices.push(0, 0*this.yscale,  0*this.zscale); this.normals.push(-1, 0, 0);
+        this.vertices.push(0, 0*this.yscale, -1*this.zscale); this.normals.push(-1, 0, 0);
+        this.vertices.push(0, 1*this.yscale, -1*this.zscale); this.normals.push(-1, 0, 0);
+        this.vertices.push(0, 1*this.yscale,  0*this.zscale); this.normals.push(-1, 0, 0);
+        this.vertices.push(0, 0*this.yscale,  2*this.zscale); this.normals.push(-1, 0, 0);
+        this.indices.push(7, 6, 5);
+        this.indices.push(5, 8, 7);
+        this.indices.push(9, 8, 5);
+        
+
+        this.primitiveType = this.scene.gl.TRIANGLES;
+        this.initGLBuffers();
+    }
+    reset(){
+        this.angle = 0;
+    }
+    setAngle(angle){
+        this.angle = angle;
+    }
+    display(){
+        this.scene.pushMatrix(); {
+            this.scene.rotate(this.angle, 0, 1, 0);
+            super.display();
+        } this.scene.popMatrix();
+    }
 }
 
 class Airship extends CGFobject {
@@ -239,12 +315,42 @@ class Airship extends CGFobject {
         super(scene);
         this.airshipBody = new AirshipBody(this.scene, 2, 0.4);
         this.airshipGondola = new AirshipGondola(this.scene, 0.25, 0.05, 0.08);
+        this.upperRudder = new AirshipRudder(this.scene, 0.3, 0.3);
+        this.lowerRudder = new AirshipRudder(this.scene, 0.3, 0.3);
+        this.rightRudder = new AirshipRudder(this.scene, 0.3, 0.3);
+        this.leftRudder  = new AirshipRudder(this.scene, 0.3, 0.3);
+    }
+    setTurnAngle(angle){
+        this.upperRudder.setAngle(-angle*10);
+        this.lowerRudder.setAngle(+angle*10);
+    }
+    setSpeed(vel){
+        this.airshipGondola.setSpeed(vel);
     }
     display(){
         this.airshipBody.display();
         this.scene.pushMatrix();{
             this.scene.translate(0, -this.airshipBody.getRadius()-0.2*this.airshipGondola.getHeight(), 0);
             this.airshipGondola.display();
+        } this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.translate(0,  0.08, -1);
+            this.upperRudder.display();
+        } this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.rotate(Math.PI, 0, 0, 1);
+            this.scene.translate(0, 0.08, -1);
+            this.lowerRudder.display();
+        } this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.rotate(Math.PI/2, 0, 0, 1);
+            this.scene.translate(0, 0.08, -1);
+            this.rightRudder.display();
+        } this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.rotate(-Math.PI/2, 0, 0, 1);
+            this.scene.translate(0, 0.08, -1);
+            this.leftRudder.display();
         } this.scene.popMatrix();
     }
 }
@@ -258,6 +364,8 @@ class MyVehicle extends CGFobject {
         super(scene);
         this.scene = scene;
         this.reset();
+        this.update_prevtime = [];
+        this.turn_prevtime = [];
         this.airship = new Airship(this.scene);
     }
     setSpeedFactor(speedFactor){
@@ -267,6 +375,14 @@ class MyVehicle extends CGFobject {
         this.scaleFactor = scaleFactor;
     }
     display() {
+        let t = Date.now()/1000;
+        let Dt_turn = t-this.turn_prevtime;
+        if(Dt_turn > 0.1) this.turn_val = 0;
+
+        this.airship.setTurnAngle(this.turn_val);
+
+        this.airship.setSpeed(this.vel*this.speedFactor);
+
         this.scene.pushMatrix();{
             this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
             this.scene.rotate(this.angle, 0, 1, 0);
@@ -275,26 +391,36 @@ class MyVehicle extends CGFobject {
 
             this.airship.display();
         }this.scene.popMatrix();
+    
+
     }
     update(){
+        let t = Date.now()/1000;
+        if(this.update_prevtime == []) this.update_prevtime = t;
+        let dt = t - this.update_prevtime;
+
         let dr = {
-            x: this.vel * this.speedFactor * Math.sin(this.angle),
+            x: this.vel * this.speedFactor * Math.sin(this.angle) * dt,
             y: 0,
-            z: this.vel * this.speedFactor * Math.cos(this.angle)
+            z: this.vel * this.speedFactor * Math.cos(this.angle) * dt
         };
         this.pos.x += dr.x;
         this.pos.y += dr.y;
         this.pos.z += dr.z;
+
+        this.update_prevtime = t;
     }
     turn(val){
         this.angle += val;
+        this.turn_val = val;
+        this.turn_prevtime = Date.now()/1000;
     }
     accelerate(val){
         this.vel += val;
     }
     reset(){
         this.angle = 0;
-        this.pos   = {x: 0, y: 0, z: 0};
+        this.pos   = {x: 0, y: 10, z: 0};
         this.vel   = 0;
         this.speedFactor = 1.0;
         this.scaleFactor = 1.0;

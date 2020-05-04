@@ -36,7 +36,7 @@ class MyScene extends CGFscene {
         this.displayAxis    = true;
         this.displayCylinder = false;
         this.displaySphere  = false;
-        this.displayVehicle = false;
+        this.displayVehicle = true;
         this.displayCubeMap = true;
         this.displayTerrain = true;
         this.speedFactor    = 1.0;
@@ -52,8 +52,8 @@ class MyScene extends CGFscene {
         this.textureIds = {'Forest': 0, 'Desert': 1};
 
         //Speed, angle
-        this.vel_inc = 0.01;
-        this.angle_inc = Math.PI/36;
+        this.vel_inc = 0.05;
+        this.angle_inc = Math.PI/36/5;
     }
     initLights() {
         this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
@@ -64,7 +64,7 @@ class MyScene extends CGFscene {
         this.lights[0].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(40, 60, 40), vec3.fromValues(0, 0, 0));
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
