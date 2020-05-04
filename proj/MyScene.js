@@ -80,7 +80,7 @@ class MyScene extends CGFscene {
     }
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
-        //To be done...
+        this.vehicle.update();
         this.checkKeys();
     }
     //called when user interacts with the cube map texture dropdown
@@ -116,7 +116,6 @@ class MyScene extends CGFscene {
         }
             
         if (this.displayVehicle) this.vehicle.display();
-        this.vehicle.update();
 
         if (this.displayCubeMap) this.cubeMap.display();
         

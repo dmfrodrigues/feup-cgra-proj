@@ -365,62 +365,61 @@ class MyVehicle extends CGFobject {
         this.scene = scene;
         this.reset();
         this.update_prevtime = [];
-        this.turn_prevtime = [];
         this.airship = new Airship(this.scene);
     }
     reset(){
-        this.angle = 0;
-        this.pos   = {x: 0, y: 10, z: 0};
-        this.vel   = 0;
+        this.dir = {
+            az: 0
+        };
+        this.dirturn = {
+            az: 0
+        }
+        this.pos   = {
+            x: 0,
+            y: 10,
+            z: 0
+        };
+        this.speed   = 0;
         this.speedFactor = 1.0;
         this.scaleFactor = 1.0;
     }
     // Setters
     setSpeedFactor(speedFactor){ this.speedFactor = speedFactor; }
     setScaleFactor(scaleFactor){ this.scaleFactor = scaleFactor; }
-    turn(val){
-        this.angle += val;
-        this.turn_val = val;
-        this.turn_prevtime = Date.now()/1000;
-    }
-    accelerate(val){
-        this.vel += val;
-    }
+    setAzimuthTurn(turn){ this.dirturn.az = turn; this.airship.setTurnAngle(this.dirturn.az); }
+    turn(val){ this.setAzimuthTurn(val); }
+    setSpeed(speed){ this.speed = speed; this.airship.setSpeed(this.getRealSpeed()); }
+    accelerate(val){ this.setSpeed(this.speed + val); }
+    // Getters
+    getRealSpeed(){ return this.speed * this.speedFactor; }
     // Other functions
-    display() {
-        let t = Date.now()/1000;
-        let Dt_turn = t-this.turn_prevtime;
-        if(Dt_turn > 0.1) this.turn_val = 0;
-
-        this.airship.setTurnAngle(this.turn_val);
-
-        this.airship.setSpeed(this.vel*this.speedFactor);
-
-        this.scene.pushMatrix();{
-            this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
-            this.scene.rotate(this.angle, 0, 1, 0);
-            
-            this.scene.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
-
-            this.airship.display();
-        }this.scene.popMatrix();
-    
-
-    }
     update(){
         let t = Date.now()/1000;
         if(this.update_prevtime == []) this.update_prevtime = t;
         let dt = t - this.update_prevtime;
 
+        this.dir.az += this.dirturn.az;
+        
+
         let dr = {
-            x: this.vel * this.speedFactor * Math.sin(this.angle) * dt,
+            x: this.getRealSpeed() * Math.sin(this.dir.az) * dt,
             y: 0,
-            z: this.vel * this.speedFactor * Math.cos(this.angle) * dt
+            z: this.getRealSpeed() * Math.cos(this.dir.az) * dt
         };
         this.pos.x += dr.x;
         this.pos.y += dr.y;
         this.pos.z += dr.z;
 
         this.update_prevtime = t;
+    }
+    display() {
+        this.scene.pushMatrix();{
+            this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
+            this.scene.rotate(this.dir.az, 0, 1, 0);
+            
+            this.scene.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+
+            this.airship.display();
+        }this.scene.popMatrix();
     }
 }
