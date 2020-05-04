@@ -52,8 +52,8 @@ class MyScene extends CGFscene {
         this.textureIds = {'Forest': 0, 'Desert': 1};
 
         //Speed, angle
-        this.vel_inc = 0.05;
-        this.angle_inc = Math.PI/36/5;
+        this.SPEED_INCREMENT = 0.05;
+        this.ANGLE_INCREMENT = Math.PI/36/5;
     }
     initLights() {
         this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
@@ -132,31 +132,24 @@ class MyScene extends CGFscene {
         // ---- END Primitive drawing section
     }
     checkKeys(){
-        var text="Keys pressed: ";
-        var keysPressed=false;
-
         //Check for key codes e.g. in https://keycode.info/
-        if (this.gui.isKeyPressed("KeyW")){
-            text+=" W ";
-            keysPressed=true;
-            this.vehicle.accelerate(this.vel_inc);
+        /* Accelerate */{
+            let accel = 0;
+            if (this.gui.isKeyPressed("KeyW")) accel += this.SPEED_INCREMENT;
+            if (this.gui.isKeyPressed("KeyS")) accel -= this.SPEED_INCREMENT;
+            this.vehicle.accelerate(accel)
         }
-        if (this.gui.isKeyPressed("KeyS")){
-            text+=" S ";
-            keysPressed=true;
-            this.vehicle.accelerate(-this.vel_inc);
+        /* Angle */{
+            let angle = 0;
+            if(this.gui.isKeyPressed("KeyA")) angle += this.ANGLE_INCREMENT;
+            if(this.gui.isKeyPressed("KeyD")) angle -= this.ANGLE_INCREMENT;
+            this.vehicle.turn(angle);
         }
-        if(this.gui.isKeyPressed("KeyA")){
-            this.vehicle.turn(this.angle_inc);
-        }
-        if(this.gui.isKeyPressed("KeyD")){
-            this.vehicle.turn(-this.angle_inc);
-        }
+        // Reset
         if(this.gui.isKeyPressed("KeyR")){
             this.vehicle.reset();
             this.speedFactor = 1.0;
             this.scaleFactor = 1.0;
         }
-       if (keysPressed) console.log(text);
     }
 }
