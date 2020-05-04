@@ -54,6 +54,13 @@ class MyScene extends CGFscene {
         //Speed, angle
         this.ACCELERATION = 0.5;
         this.CURVATURE = 0.5;
+        this.autopilot = {
+            active: false,
+            RADIUS: 5,
+            TIME: 5
+        }
+        this.autopilot.CURVATURE = 1/this.autopilot.RADIUS;
+        this.autopilot.SPEED = 2*Math.PI*this.autopilot.RADIUS/this.autopilot.TIME;
     }
     initLights() {
         this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
@@ -132,20 +139,30 @@ class MyScene extends CGFscene {
     }
     checkKeys(){
         //Check for key codes e.g. in https://keycode.info/
-        /* Accelerate */{
-            let accel = 0;
-            if (this.gui.isKeyPressed("KeyW")) accel += this.ACCELERATION;
-            if (this.gui.isKeyPressed("KeyS")) accel -= this.ACCELERATION;
-            this.vehicle.accelerate(accel)
+        // Activate autopilot
+        if(this.gui.isKeyPressed("KeyP")){
+            this.autopilot.active = true;
+            this.vehicle.setSpeed(this.autopilot.SPEED);
+            this.vehicle.setAzimuthCurvature(this.autopilot.CURVATURE);
         }
-        /* Angle */{
-            let angle = 0;
-            if(this.gui.isKeyPressed("KeyA")) angle += this.CURVATURE;
-            if(this.gui.isKeyPressed("KeyD")) angle -= this.CURVATURE;
-            this.vehicle.turn(angle);
+        // Not autopilot
+        if(!this.autopilot.active){
+            /* Accelerate */{   
+                let accel = 0;
+                if (this.gui.isKeyPressed("KeyW")) accel += this.ACCELERATION;
+                if (this.gui.isKeyPressed("KeyS")) accel -= this.ACCELERATION;
+                this.vehicle.accelerate(accel)
+            }
+            /* Angle */{
+                let angle = 0;
+                if(this.gui.isKeyPressed("KeyA")) angle += this.CURVATURE;
+                if(this.gui.isKeyPressed("KeyD")) angle -= this.CURVATURE;
+                this.vehicle.turn(angle);
+            }
         }
         // Reset
         if(this.gui.isKeyPressed("KeyR")){
+            this.autopilot.active = false;
             this.vehicle.reset();
             this.speedFactor = 1.0;
             this.scaleFactor = 1.0;
