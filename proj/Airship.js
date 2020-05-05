@@ -176,8 +176,6 @@ class Gondola extends CGFobject {
                 this.indices.push(1+3*i-2, 1+3*i+1, 1+3*i);
                 this.indices.push(1+3*i-1, 1+3*i+2, 0);
             }
-            console.log(this.vertices);
-            console.log(this.indices);
         }
         /* Left */{
             this.vertices.push(this.radius, 0          , +this.length/2); this.normals.push(1, 0, 0); this.texCoords.push(6/12, 1/2);

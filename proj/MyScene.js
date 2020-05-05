@@ -31,12 +31,14 @@ class MyScene extends CGFscene {
         this.sphere = new MySphere(this,50,25);
         this.cubeMap = new MyCubeMap(this);
         this.terrain = new MyTerrain(this);
+        this.supply = new MySupply(this);
+        this.supply.drop({x: 0, y: 10, z: 0});
 
         //Objects connected to MyInterface
         this.displayAxis    = true;
         this.displayCylinder = false;
         this.displaySphere  = false;
-        this.displayVehicle = true;
+        this.displayVehicle = false;
         this.displayCubeMap = true;
         this.displayTerrain = true;
         this.speedFactor    = 1.0;
@@ -88,6 +90,7 @@ class MyScene extends CGFscene {
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.vehicle.update(t);
+        this.supply.update(t);
         this.checkKeys();
     }
     //called when user interacts with the cube map texture dropdown
@@ -121,6 +124,8 @@ class MyScene extends CGFscene {
             this.mapMaterial.apply();
             this.cylinder.display();
         }
+
+        this.supply.display();
             
         if (this.displayVehicle) this.vehicle.display();
 
