@@ -8,28 +8,35 @@ class MySupply extends CGFobject {
      * @method constructor
      * @param  {CGFscene} scene - MyScene object
      */
-    constructor(scene) {
+    constructor(scene, scale) {
         super(scene);
-        this.state = this.SupplyStates.INACTIVE;
         this.PHYSICS = {
             SPEED: 2
         };
+        this.scale = scale;
         this.reset();
         this.initObjects();
     }
     reset(){
+        this.state = this.SupplyStates.INACTIVE;
+        this.pos = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
         this.update_prevtime = undefined;
     }
     initObjects(){
         this.obj = {};
         this.obj[this.SupplyStates.INACTIVE] = undefined;
-        this.obj[this.SupplyStates.FALLING ] = new ClosedCrate(this.scene);
-        this.obj[this.SupplyStates.LANDED  ] = new OpenCrate(this.scene);
+        this.obj[this.SupplyStates.FALLING ] = new ClosedCrate(this.scene, this.scale);
+        this.obj[this.SupplyStates.LANDED  ] = new OpenCrate(this.scene, this.scale);
     }
     setPos(pos){
         this.pos = pos;
     }
     drop(pos){
+        this.update_prevtime = undefined;
         this.state = this.SupplyStates.FALLING;
         this.setPos(pos);
     }
@@ -58,9 +65,11 @@ class MySupply extends CGFobject {
         }
     }
     display(){
-        this.scene.pushMatrix(); {
-            this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
-            if(this.obj[this.state] != undefined) this.obj[this.state].display();
-        } this.scene.popMatrix();
+        if(this.obj[this.state] != undefined){
+            this.scene.pushMatrix(); {
+                this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
+                this.obj[this.state].display();
+            } this.scene.popMatrix();
+        }
     }
 }

@@ -3,8 +3,9 @@ class ClosedCrate extends CGFobject {
      * @method constructor
      * @param  {CGFscene} scene - MyScene object
      */
-    constructor(scene) {
+    constructor(scene, scale) {
         super(scene);
+        this.scale = scale;
         this.initBuffers();
         this.initMaterials();
     }
@@ -35,6 +36,7 @@ class ClosedCrate extends CGFobject {
             -0.5, 1, +0.5,
             +0.5, 1, +0.5
         ];
+        this.vertices = this.vertices.map(x => x*this.scale);
 
         this.normals = [
             0, 0, 1,
@@ -133,10 +135,11 @@ class OpenCrate extends CGFobject {
      * @method constructor
      * @param  {CGFscene} scene - MyScene object
      */
-    constructor(scene) {
+    constructor(scene, scale) {
         super(scene);
         this.THETA = 60*Math.PI/180;
         this.ABOVE_GROUND = 0.01;
+        this.scale = scale;
         this.initBuffers();
         this.initMaterials();
     }
@@ -167,6 +170,7 @@ class OpenCrate extends CGFobject {
         ];
         let N1 = this.vertices.length/3;
         this.vertices = this.vertices.concat(this.vertices);
+        this.vertices = this.vertices.map(x => x*this.scale);
 
         this.normals = [
             +0, -s, +c,

@@ -19,7 +19,7 @@ class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.setUpdatePeriod(1);
+        this.setUpdatePeriod(10);
         
         this.enableTextures(true);
 
@@ -31,14 +31,19 @@ class MyScene extends CGFscene {
         this.sphere = new MySphere(this,50,25);
         this.cubeMap = new MyCubeMap(this);
         this.terrain = new MyTerrain(this);
-        this.supply = new MySupply(this);
-        this.supply.drop({x: 0, y: 10, z: 0});
+        this.supplies = [];
+        this.NUMBER_SUPPLIES = 5;
+        this.nSuppliesDelivered = 0;
+        for(let i = 0; i < this.NUMBER_SUPPLIES; ++i){
+            this.supplies.push(new MySupply(this, 0.5));
+        }
 
+    
         //Objects connected to MyInterface
         this.displayAxis    = true;
         this.displayCylinder = false;
         this.displaySphere  = false;
-        this.displayVehicle = false;
+        this.displayVehicle = true;
         this.displayCubeMap = true;
         this.displayTerrain = true;
         this.speedFactor    = 1.0;
@@ -63,6 +68,9 @@ class MyScene extends CGFscene {
         }
         this.autopilot.CURVATURE = 1/this.autopilot.RADIUS;
         this.autopilot.SPEED = 2*Math.PI*this.autopilot.RADIUS/this.autopilot.TIME;
+
+        // Reset
+        this.reset();
     }
     initLights() {
         this.setGlobalAmbientLight(0.5, 0.5, 0.5, 1.0);
@@ -81,6 +89,17 @@ class MyScene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+    reset(){
+        this.autopilot.active = false;
+        this.vehicle.reset();
+        this.speedFactor = 1.0;
+        this.scaleFactor = 1.0;
+
+        this.L_pressed = false;
+
+        for(let s of this.supplies) s.reset();
+        this.nSuppliesDelivered = 0;
+    }
     onSpeedFactorChange(v){
         this.vehicle.setSpeedFactor(this.speedFactor);
     }
@@ -90,7 +109,7 @@ class MyScene extends CGFscene {
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
         this.vehicle.update(t);
-        this.supply.update(t);
+        for(let s of this.supplies) s.update(t);
         this.checkKeys();
     }
     //called when user interacts with the cube map texture dropdown
@@ -125,7 +144,7 @@ class MyScene extends CGFscene {
             this.cylinder.display();
         }
 
-        this.supply.display();
+        for(let s of this.supplies) s.display();
             
         if (this.displayVehicle) this.vehicle.display();
 
@@ -171,12 +190,20 @@ class MyScene extends CGFscene {
                 this.vehicle.elevate(angle);
             }
         }
+        // Launch supplies
+        if(!this.L_pressed && this.gui.isKeyPressed("KeyL")){
+            this.L_pressed = true;
+        }
+        if(this.L_pressed && !this.gui.isKeyPressed("KeyL")){
+            this.L_pressed = false;
+            if(this.nSuppliesDelivered < this.NUMBER_SUPPLIES){
+                this.supplies[this.nSuppliesDelivered].drop(this.vehicle.getDropPos());
+                this.nSuppliesDelivered++;
+            }
+        }
         // Reset
         if(this.gui.isKeyPressed("KeyR")){
-            this.autopilot.active = false;
-            this.vehicle.reset();
-            this.speedFactor = 1.0;
-            this.scaleFactor = 1.0;
+            this.reset();
         }
     }
 }

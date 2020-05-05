@@ -47,6 +47,7 @@ class MyVehicle extends CGFobject {
     accelerate(val){ this.setAcceleration(val); }
     // Getters
     getRealSpeed(){ return this.pos.v * this.speedFactor; }
+    getDropPos(){ return {x: this.pos.x, y: this.pos.y-1, z: this.pos.z}; }
     // Other functions
     update(t){
         /* Pass t from milliseconds to seconds */

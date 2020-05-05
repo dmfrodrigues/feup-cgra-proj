@@ -283,6 +283,10 @@ class AirshipControlSurface extends CGFobject {
         this.zscale = zscale;
         this.reset();
         this.initBuffers();
+        this.initMaterials();
+    }
+    reset(){
+        this.angle = 0;
     }
     initBuffers(){
         this.vertices = [
@@ -321,8 +325,14 @@ class AirshipControlSurface extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
-    reset(){
-        this.angle = 0;
+    initMaterials(){
+        this.materials = {};
+
+        this.materials.surface = new CGFappearance(this.scene);
+        this.materials.surface.setAmbient(0.8, 0.8, 0.8, 1);
+        this.materials.surface.setDiffuse(0.7, 0.7, 0.7, 1);
+        this.materials.surface.setSpecular(0.1, 0.1, 0.1, 1);
+        this.materials.surface.setShininess(2.0);
     }
     setAngle(angle){
         this.angle = angle;
@@ -330,6 +340,7 @@ class AirshipControlSurface extends CGFobject {
     display(){
         this.scene.pushMatrix(); {
             this.scene.rotate(this.angle, 0, 1, 0);
+            this.materials.surface.apply();
             super.display();
         } this.scene.popMatrix();
     }
