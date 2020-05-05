@@ -5,6 +5,9 @@
 class MyVehicle extends CGFobject {
     constructor(scene) {
         super(scene);
+        this.PHYSICS = {
+            DRAG_COEFFICIENT: 0.1
+        }
         this.scene = scene;
         this.reset();
         this.update_prevtime = [];
@@ -43,11 +46,20 @@ class MyVehicle extends CGFobject {
     turn(val){ this.setAzimuthCurvature(val); }
     elevate(val){ this.setElevationCurvature(val); }
     setSpeed(speed){ this.pos.v = speed; this.vehicle.setSpeed(this.getRealSpeed()); }
+    level(){ this.dir.el.theta = 0; }
     setAcceleration(a){ this.pos.a = a; }
     accelerate(val){ this.setAcceleration(val); }
     // Getters
     getRealSpeed(){ return this.pos.v * this.speedFactor; }
     getDropPos(){ return {x: this.pos.x, y: this.pos.y-1, z: this.pos.z}; }
+    getSpeedVector(){
+        let v = this.getRealSpeed();
+        return {
+            x: v * Math.cos(this.dir.el.theta) * Math.sin(this.dir.az.theta),
+            y: v * Math.sin(this.dir.el.theta),
+            z: v * Math.cos(this.dir.el.theta) * Math.cos(this.dir.az.theta)
+        };
+    }
     // Other functions
     update(t){
         /* Pass t from milliseconds to seconds */
@@ -59,6 +71,8 @@ class MyVehicle extends CGFobject {
         }
         /* Speed update */ {
             this.setSpeed(this.pos.v + this.pos.a * dt);
+            // Drag
+            this.setSpeed(this.pos.v*(1-this.PHYSICS.DRAG_COEFFICIENT*dt));
         }
         /* Azimuth, elevation update */ {
             this.dir.az.theta += this.pos.v * this.dir.az.curvature * dt;
@@ -66,10 +80,11 @@ class MyVehicle extends CGFobject {
             this.dir.el.theta = Math.min(Math.max(this.dir.el.theta, -this.dir.el.MAX_THETA), this.dir.el.MAX_THETA);
         }
         /* Position update */ {
+            let v = this.getSpeedVector();
             let dr = this.getRealSpeed() * dt;
-            let dx = + dr * Math.cos(this.dir.el.theta) * Math.sin(this.dir.az.theta);
-            let dy = + dr * Math.sin(this.dir.el.theta);
-            let dz = + dr * Math.cos(this.dir.el.theta) * Math.cos(this.dir.az.theta);
+            let dx = v.x * dt;
+            let dy = v.y * dt;
+            let dz = v.z * dt;
             this.pos.x += dx; 
             this.pos.y += dy;
             this.pos.z += dz;

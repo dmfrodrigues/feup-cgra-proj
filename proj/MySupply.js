@@ -11,7 +11,8 @@ class MySupply extends CGFobject {
     constructor(scene, scale) {
         super(scene);
         this.PHYSICS = {
-            SPEED: 2
+            GRAVITIC_ACCELERATION: 5,
+            DRAG_COEFFICIENT: 1.5
         };
         this.scale = scale;
         this.reset();
@@ -24,6 +25,11 @@ class MySupply extends CGFobject {
             y: 0,
             z: 0
         };
+        this.vel = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
         this.update_prevtime = undefined;
     }
     initObjects(){
@@ -32,13 +38,11 @@ class MySupply extends CGFobject {
         this.obj[this.SupplyStates.FALLING ] = new ClosedCrate(this.scene, this.scale);
         this.obj[this.SupplyStates.LANDED  ] = new OpenCrate(this.scene, this.scale);
     }
-    setPos(pos){
-        this.pos = pos;
-    }
-    drop(pos){
+    drop(pos, vel){
         this.update_prevtime = undefined;
         this.state = this.SupplyStates.FALLING;
-        this.setPos(pos);
+        this.pos = pos;
+        this.vel = vel;
     }
     land(){
         return (this.pos.y < 0);
@@ -49,17 +53,25 @@ class MySupply extends CGFobject {
         if(this.update_prevtime == undefined) this.update_prevtime = t;
         let Dt = t - this.update_prevtime;
         if(this.state == this.SupplyStates.FALLING){
-            let dr = this.PHYSICS.SPEED * Dt;
-            let dx = 0;
-            let dy = -dr;
-            let dz = 0;
-            this.pos.x += dx;
-            this.pos.y += dy;
-            this.pos.z += dz;
+            //Gravity
+            this.vel.y -= this.PHYSICS.GRAVITIC_ACCELERATION * Dt;
+            // Drag
+            this.vel.x *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
+            this.vel.y *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
+            this.vel.z *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
+            // Update positions
+            this.pos.x += this.vel.x * Dt;
+            this.pos.y += this.vel.y * Dt;
+            this.pos.z += this.vel.z * Dt;
             this.update_prevtime = t;
 
             if(this.land()){
                 this.pos.y = 0;
+                this.vel = {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                };
                 this.state = this.SupplyStates.LANDED;
             }
         }

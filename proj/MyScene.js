@@ -168,6 +168,8 @@ class MyScene extends CGFscene {
             this.autopilot.active = true;
             this.vehicle.setSpeed(this.autopilot.SPEED);
             this.vehicle.setAzimuthCurvature(this.autopilot.CURVATURE);
+            this.vehicle.setElevationCurvature(0);
+            this.vehicle.level();
         }
         // Not autopilot
         if(!this.autopilot.active){
@@ -197,7 +199,7 @@ class MyScene extends CGFscene {
         if(this.L_pressed && !this.gui.isKeyPressed("KeyL")){
             this.L_pressed = false;
             if(this.nSuppliesDelivered < this.NUMBER_SUPPLIES){
-                this.supplies[this.nSuppliesDelivered].drop(this.vehicle.getDropPos());
+                this.supplies[this.nSuppliesDelivered].drop(this.vehicle.getDropPos(), this.vehicle.getSpeedVector());
                 this.nSuppliesDelivered++;
             }
         }
