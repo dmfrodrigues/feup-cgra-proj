@@ -8,11 +8,14 @@
 - `P` to turn on autopilot (flies in a circle)
 - `L` to drop supply (up to 5 supplies)
 - `↑`/`↓` to raise/lower the elevators, making the airship turn up/down
-- `C` to change between distant camera and airship camera
+- `C` to change views:
+    - Distant camera
+    - Airship camera with fixed horizon
+    - Airship closeup pointing forward
 
 ## Extra features
 - [x] The airship can turn up/down (limited to a pith of ±20°)
 - [x] Supplies fall according to classical laws of gravitational physics
 - [x] Supplies are subject to linear drag
 - [x] The airship is subject to linear drag
-- [ ] Change view between distant camera and airship camera
+- [x] Change cameras

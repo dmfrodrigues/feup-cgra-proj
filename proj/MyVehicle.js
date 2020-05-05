@@ -51,7 +51,37 @@ class MyVehicle extends CGFobject {
     accelerate(val){ this.setAcceleration(val); }
     // Getters
     getRealSpeed(){ return this.pos.v * this.speedFactor; }
-    getDropPos(){ return {x: this.pos.x, y: this.pos.y-1, z: this.pos.z}; }
+    getDropPos(){
+        return {
+            x: this.pos.x,
+            y: this.pos.y-1, 
+            z: this.pos.z
+        };
+    }
+    getAboveCameraPos(){
+        let ret = {
+            x: this.pos.x-20*Math.sin(this.dir.az.theta), 
+            y: this.pos.y+6, 
+            z: this.pos.z-20*Math.cos(this.dir.az.theta)
+        };
+        return vec3.fromValues(ret.x, ret.y, ret.z);
+    }
+    getBehindCameraPos(){
+        let ret = {
+            x: this.pos.x-6 * Math.cos(this.dir.el.theta) * Math.sin(this.dir.az.theta), 
+            y: this.pos.y-6 * Math.sin(this.dir.el.theta), 
+            z: this.pos.z-6 * Math.cos(this.dir.el.theta) * Math.cos(this.dir.az.theta)
+        };
+        return vec3.fromValues(ret.x, ret.y, ret.z);
+    }
+    getCameraTarget(){
+        let ret = {
+            x: this.pos.x, 
+            y: this.pos.y, 
+            z: this.pos.z
+        }; 
+        return vec3.fromValues(ret.x, ret.y, ret.z);
+    }
     getSpeedVector(){
         let v = this.getRealSpeed();
         return {

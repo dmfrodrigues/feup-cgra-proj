@@ -19,7 +19,7 @@ class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.setUpdatePeriod(10);
+        this.setUpdatePeriod(20);
         
         this.enableTextures(true);
 
@@ -60,7 +60,7 @@ class MyScene extends CGFscene {
 
         //Speed, angle
         this.ACCELERATION = 0.5;
-        this.CURVATURE = 0.5;
+        this.CURVATURE = 0.2;
         this.autopilot = {
             active: false,
             RADIUS: 5,
@@ -81,7 +81,13 @@ class MyScene extends CGFscene {
         this.lights[0].update();
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 35, 25), vec3.fromValues(0, 0, 0));
+        this.current_camera_state = 0;
+        this.cameras = [
+            new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 35, 25), vec3.fromValues(0, 0, 0)),
+            new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 35, 25), vec3.fromValues(0, 0, 0)),
+            new CGFcamera(0.4, 0.1, 500, vec3.fromValues(25, 35, 25), vec3.fromValues(0, 0, 0))
+        ]
+        this.camera = this.cameras[this.current_camera_state];
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -96,6 +102,7 @@ class MyScene extends CGFscene {
         this.scaleFactor = 1.0;
 
         this.L_pressed = false;
+        this.isCHeld = false;
 
         for(let s of this.supplies) s.reset();
         this.nSuppliesDelivered = 0;
@@ -108,9 +115,17 @@ class MyScene extends CGFscene {
     }
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
+        if(this.autopilot.active) this.vehicle.setSpeed(this.autopilot.SPEED);
         this.vehicle.update(t);
+        
         for(let s of this.supplies) s.update(t);
         this.checkKeys();
+        
+        this.cameras[1].setPosition(this.vehicle.getAboveCameraPos());
+        this.cameras[1].setTarget(this.vehicle.getCameraTarget());
+
+        this.cameras[2].setPosition(this.vehicle.getBehindCameraPos());
+        this.cameras[2].setTarget(this.vehicle.getCameraTarget());
     }
     //called when user interacts with the cube map texture dropdown
     updateCubeMapTexture()
@@ -166,7 +181,6 @@ class MyScene extends CGFscene {
         // Activate autopilot
         if(this.gui.isKeyPressed("KeyP")){
             this.autopilot.active = true;
-            this.vehicle.setSpeed(this.autopilot.SPEED);
             this.vehicle.setAzimuthCurvature(this.autopilot.CURVATURE);
             this.vehicle.setElevationCurvature(0);
             this.vehicle.level();
@@ -202,6 +216,15 @@ class MyScene extends CGFscene {
                 this.supplies[this.nSuppliesDelivered].drop(this.vehicle.getDropPos(), this.vehicle.getSpeedVector());
                 this.nSuppliesDelivered++;
             }
+        }
+        // Change camera
+        if(!this.isCHeld && this.gui.isKeyPressed("KeyC")){
+            this.isCHeld = true;
+        }
+        if(this.isCHeld && !this.gui.isKeyPressed("KeyC")){
+            this.isCHeld = false;
+            this.current_camera_state = (this.current_camera_state+1)%this.cameras.length;
+            this.camera = this.cameras[this.current_camera_state];
         }
         // Reset
         if(this.gui.isKeyPressed("KeyR")){
