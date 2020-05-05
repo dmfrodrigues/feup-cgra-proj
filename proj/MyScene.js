@@ -19,7 +19,7 @@ class MyScene extends CGFscene {
         this.gl.enable(this.gl.CULL_FACE);
         this.gl.depthFunc(this.gl.LEQUAL);
 
-        this.setUpdatePeriod(50);
+        this.setUpdatePeriod(1);
         
         this.enableTextures(true);
 
@@ -87,7 +87,7 @@ class MyScene extends CGFscene {
     }
     // called periodically (as per setUpdatePeriod() in init())
     update(t){
-        this.vehicle.update();
+        this.vehicle.update(t);
         this.checkKeys();
     }
     //called when user interacts with the cube map texture dropdown
@@ -153,11 +153,17 @@ class MyScene extends CGFscene {
                 if (this.gui.isKeyPressed("KeyS")) accel -= this.ACCELERATION;
                 this.vehicle.accelerate(accel)
             }
-            /* Angle */{
+            /* Azimuth angle */{
                 let angle = 0;
                 if(this.gui.isKeyPressed("KeyA")) angle += this.CURVATURE;
                 if(this.gui.isKeyPressed("KeyD")) angle -= this.CURVATURE;
                 this.vehicle.turn(angle);
+            }
+            /* Elevation angle */{
+                let angle = 0;
+                if(this.gui.isKeyPressed("ArrowUp")) angle += this.CURVATURE;
+                if(this.gui.isKeyPressed("ArrowDown")) angle -= this.CURVATURE;
+                this.vehicle.elevate(angle);
             }
         }
         // Reset
