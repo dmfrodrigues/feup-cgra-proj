@@ -9,6 +9,7 @@ serialInclude(
         'MyPyramid.js',
         'Airship.js',
         'MyVehicle.js',
+        'MySupply.js',
         'MyScene.js',
         'MyInterface.js',
         'MySphere.js',
