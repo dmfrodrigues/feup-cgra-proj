@@ -12,8 +12,6 @@ class MyVehicle extends CGFobject {
         this.reset();
         this.update_prevtime = [];
         this.vehicle = new Airship(this.scene);
-        this.flag = new MyPlane(this.scene,20,0,1,0,1,true);
-        this.initFlag();
     }
     reset(){
         this.dir = {
@@ -123,6 +121,10 @@ class MyVehicle extends CGFobject {
         }
         /* Update previous time */
         this.update_prevtime = t;
+
+        /* Flag time and speed update */
+        this.vehicle.flag.flagShader.setUniformsValues({timeFactor: t*10 % 1000});
+        this.vehicle.flag.flagShader.setUniformsValues({speed: this.getRealSpeed()});
     }
     display() {
         this.scene.pushMatrix();{
@@ -134,28 +136,5 @@ class MyVehicle extends CGFobject {
 
             this.vehicle.display();
         }this.scene.popMatrix();
-
-        this.scene.pushMatrix();{
-            this.scene.translate(0,10,0);
-            this.scene.scale(10,10,10);
-            this.scene.setActiveShader(this.flagShader);
-            this.flagAppearance.apply();
-            this.flag.display();
-        }this.scene.popMatrix();
-    }
-    initFlag()
-    {
-        this.flagShader = new CGFshader(this.scene.gl,"shaders/flag.vert","shaders/flag.frag");
-        this.flagShader.setUniformsValues({timeFactor: 0});
-
-        this.flagTexture = new CGFtexture(this.scene,"images/terrain.jpg");
-
-        this.flagAppearance = new CGFappearance(this.scene);
-        this.flagAppearance.setAmbient(0.3, 0.3, 0.3, 1);
-		this.flagAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
-		this.flagAppearance.setSpecular(0.0, 0.0, 0.0, 1);
-        this.flagAppearance.setShininess(120);
-        this.flagAppearance.setTexture(this.flagTexture);
-        this.flagAppearance.setTextureWrap('REPEAT','REPEAT');
     }
 }

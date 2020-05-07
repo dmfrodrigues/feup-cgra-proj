@@ -9,21 +9,29 @@ uniform mat4 uNMatrix;
 varying vec2 vTextureCoord;
 
 uniform float timeFactor;
+uniform float speed;
 
 uniform sampler2D uSampler;
 uniform sampler2D uSampler2;
 uniform float normScale;
 
+
 #define PI 3.14159265359
 
 void main() {
 
-	//float offset = sin(aTextureCoord.x * 2.0 * PI);
-	float offset = aTextureCoord.x;
+	vec2 aTextureCoord2 = aTextureCoord+vec2(timeFactor*0.02*speed,0.0);
 
+	float offset = sin(aTextureCoord2.x * 2.0 * PI);
+	
 	vec3 increase = vec3(0,0,offset);
 
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition + increase,1.0);
+	vec3 movingPos = aVertexPosition + 0.1 * increase;
+
+	if (aTextureCoord.x <= 0.01 || speed == 0.0) movingPos = aVertexPosition;
+	
+	gl_Position = uPMatrix * uMVMatrix * vec4(movingPos,1.0);
+	
 
 	vTextureCoord = aTextureCoord;
 }

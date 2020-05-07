@@ -49,7 +49,8 @@ class MyPlane extends CGFobject{
 		}
 		if (this.doubleSided)
 		{
-			var ind = 0
+			/*
+			var ind = 0;
 			for (var j = 0; j < this.nrDivs; j++) {
 				for (var i = 0; i <= this.nrDivs; i++) {
 					this.indices.push(ind + 1);
@@ -60,7 +61,7 @@ class MyPlane extends CGFobject{
 					this.indices.push(ind + this.nrDivs + 1);
 					this.indices.push(ind - 1);
 				}
-			}
+			}*/
 		}
 		this.primitiveType = this.scene.gl.TRIANGLE_STRIP;
 		this.initGLBuffers();

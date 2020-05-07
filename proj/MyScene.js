@@ -126,9 +126,6 @@ class MyScene extends CGFscene {
 
         this.cameras[2].setPosition(this.vehicle.getBehindCameraPos());
         this.cameras[2].setTarget(this.vehicle.getCameraTarget());
-
-        //Setting time factor for flag movement
-        this.vehicle.flagShader.setUniformsValues({timeFactor: t/100 % 1000});
     }
     //called when user interacts with the cube map texture dropdown
     updateCubeMapTexture()

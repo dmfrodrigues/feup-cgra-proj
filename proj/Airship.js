@@ -346,6 +346,43 @@ class AirshipControlSurface extends CGFobject {
     }
 }
 
+class AirshipFlag extends CGFobject
+{
+    constructor(scene)
+    {
+        super(scene);
+        this.scene = scene;
+        this.plane = new MyPlane(this.scene,50,0,1,0,1,true);
+        this.init();
+    }
+    init()
+    {
+        this.flagShader = new CGFshader(this.scene.gl,"shaders/flag.vert","shaders/flag.frag");
+        this.flagShader.setUniformsValues({timeFactor: 0});
+
+        this.flagTexture = new CGFtexture(this.scene,"images/flag.jpeg");
+
+        this.flagAppearance = new CGFappearance(this.scene);
+        this.flagAppearance.setAmbient(0.3, 0.3, 0.3, 1);
+		this.flagAppearance.setDiffuse(0.7, 0.7, 0.7, 1);
+		this.flagAppearance.setSpecular(0.0, 0.0, 0.0, 1);
+        this.flagAppearance.setShininess(120);
+        this.flagAppearance.setTexture(this.flagTexture);
+        this.flagAppearance.setTextureWrap('REPEAT','REPEAT');
+    }
+    display()
+    {
+        this.scene.pushMatrix();{
+            this.scene.translate(0,-0.23,-1.8);
+            this.scene.scale(0.3,0.3,1);
+            this.scene.rotate(Math.PI/2,0,1,0);
+            this.scene.setActiveShader(this.flagShader);
+            this.flagAppearance.apply();
+            this.plane.display();
+        }this.scene.popMatrix();
+    }
+}
+
 class Airship extends CGFobject {
     constructor(scene){
         super(scene);
@@ -358,6 +395,7 @@ class Airship extends CGFobject {
         this.lowerRudder    = new AirshipControlSurface(this.scene, 0.3, 0.3);
         this.rightElevator  = new AirshipControlSurface(this.scene, 0.3, 0.3);
         this.leftElevator   = new AirshipControlSurface(this.scene, 0.3, 0.3);
+        this.flag           = new AirshipFlag(this.scene);
     }
     setRudderAngle(angle){
         this.upperRudder.setAngle(-angle);
@@ -395,5 +433,6 @@ class Airship extends CGFobject {
             this.scene.translate(0, 0.08, -1);
             this.leftElevator.display();
         } this.scene.popMatrix();
+        this.flag.display();
     }
 }
