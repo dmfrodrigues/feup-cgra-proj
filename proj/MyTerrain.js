@@ -7,7 +7,7 @@ class MyTerrain extends CGFobject {
     constructor(scene){
         super(scene);
         this.scene = scene;
-        this.plane = new MyPlane(this.scene,20,0,1,0,1);
+        this.plane = new MyPlane(this.scene,20,0,1,0,1,false);
         this.shader = new CGFshader(this.scene.gl, "shaders/terrain.vert", "shaders/terrain.frag");
         
         this.terrainTexture = new CGFtexture(this.scene,"images/terrain.jpg");

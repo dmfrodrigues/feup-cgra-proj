@@ -1,7 +1,7 @@
 
 /** Represents a plane with nrDivs divisions along both axis, with center at (0,0) */
 class MyPlane extends CGFobject{
-	constructor(scene, nrDivs, minS, maxS, minT, maxT) {
+	constructor(scene, nrDivs, minS, maxS, minT, maxT,doubleSided) {
 		super(scene);
 		// nrDivs = 1 if not provided
 		nrDivs = typeof nrDivs !== 'undefined' ? nrDivs : 1;
@@ -13,6 +13,7 @@ class MyPlane extends CGFobject{
 		this.maxT = maxT || 1;
 		this.q = (this.maxS - this.minS) / this.nrDivs;
 		this.w = (this.maxT - this.minT) / this.nrDivs;
+		this.doubleSided = doubleSided
 		this.initBuffers();
 	}
 	initBuffers() {
@@ -44,6 +45,21 @@ class MyPlane extends CGFobject{
 			if (j + 1 < this.nrDivs) {
 				this.indices.push(ind + this.nrDivs);
 				this.indices.push(ind);
+			}
+		}
+		if (this.doubleSided)
+		{
+			var ind = 0
+			for (var j = 0; j < this.nrDivs; j++) {
+				for (var i = 0; i <= this.nrDivs; i++) {
+					this.indices.push(ind + 1);
+					this.indices.push(ind + this.nrDivs);
+					ind++;
+				}
+				if (j + 1 < this.nrDivs) {
+					this.indices.push(ind + this.nrDivs + 1);
+					this.indices.push(ind - 1);
+				}
 			}
 		}
 		this.primitiveType = this.scene.gl.TRIANGLE_STRIP;

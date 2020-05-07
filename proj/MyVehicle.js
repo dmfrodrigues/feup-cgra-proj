@@ -12,7 +12,7 @@ class MyVehicle extends CGFobject {
         this.reset();
         this.update_prevtime = [];
         this.vehicle = new Airship(this.scene);
-        this.flag = new MyPlane(this.scene,20,0,1,0,1);
+        this.flag = new MyPlane(this.scene,20,0,1,0,1,true);
         this.initFlag();
     }
     reset(){

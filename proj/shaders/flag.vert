@@ -14,9 +14,12 @@ uniform sampler2D uSampler;
 uniform sampler2D uSampler2;
 uniform float normScale;
 
+#define PI 3.14159265359
+
 void main() {
 
-	float offset = sin(aTextureCoord.x);
+	//float offset = sin(aTextureCoord.x * 2.0 * PI);
+	float offset = aTextureCoord.x;
 
 	vec3 increase = vec3(0,0,offset);
 
