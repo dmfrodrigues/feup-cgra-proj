@@ -26,7 +26,7 @@ void main() {
 	
 	vec3 increase = vec3(0,0,offset);
 
-	vec3 movingPos = aVertexPosition + speed / 50.0 * increase;
+	vec3 movingPos = aVertexPosition + 0.1 * increase;
 
 	if (aTextureCoord.x <= 0.01) movingPos = aVertexPosition;
 	
