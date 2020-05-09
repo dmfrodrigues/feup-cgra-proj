@@ -11,6 +11,7 @@ class MyVehicle extends CGFobject {
         this.scene = scene;
         this.reset();
         this.update_prevtime = [];
+        this.shader_LinearMeasure = 0;
         this.vehicle = new Airship(this.scene);
     }
     reset(){
@@ -123,8 +124,9 @@ class MyVehicle extends CGFobject {
         this.update_prevtime = t;
 
         /* Flag time and speed update */
-        this.vehicle.flag.flagShader.setUniformsValues({timeFactor: t*10 % 1000});
-        this.vehicle.flag.flagShader.setUniformsValues({speed: this.getRealSpeed()});
+        this.shader_LinearMeasure += dt * this.getRealSpeed();
+        console.log(this.shader_LinearMeasure);
+        this.vehicle.flag.flagShader.setUniformsValues({linearMeasure: this.shader_LinearMeasure});
     }
     display() {
         this.scene.pushMatrix();{

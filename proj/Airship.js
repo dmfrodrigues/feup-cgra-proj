@@ -358,7 +358,7 @@ class AirshipFlag extends CGFobject
     init()
     {
         this.flagShader = new CGFshader(this.scene.gl,"shaders/flag.vert","shaders/flag.frag");
-        this.flagShader.setUniformsValues({timeFactor: 0});
+        this.flagShader.setUniformsValues({linearMeasure: 0});
 
         this.flagTexture = new CGFtexture(this.scene,"images/flag.jpeg");
 

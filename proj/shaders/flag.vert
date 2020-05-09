@@ -8,8 +8,7 @@ uniform mat4 uNMatrix;
 
 varying vec2 vTextureCoord;
 
-uniform float timeFactor;
-uniform float speed;
+uniform float linearMeasure;
 
 uniform sampler2D uSampler;
 uniform sampler2D uSampler2;
@@ -20,7 +19,7 @@ uniform float normScale;
 
 void main() {
 
-	vec2 aTextureCoord2 = aTextureCoord+vec2(timeFactor*0.02*speed,0.0);
+	vec2 aTextureCoord2 = aTextureCoord+vec2(linearMeasure,0.0);
 
 	float offset = sin(aTextureCoord2.x * 2.0 * PI);
 	
@@ -28,7 +27,7 @@ void main() {
 
 	vec3 movingPos = aVertexPosition + 0.1 * increase;
 
-	if (aTextureCoord.x <= 0.01 || speed == 0.0) movingPos = aVertexPosition;
+	if (aTextureCoord.x <= 0.01) movingPos = aVertexPosition;
 	
 	gl_Position = uPMatrix * uMVMatrix * vec4(movingPos,1.0);
 	
