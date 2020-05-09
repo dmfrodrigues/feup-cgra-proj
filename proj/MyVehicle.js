@@ -124,7 +124,7 @@ class MyVehicle extends CGFobject {
         this.update_prevtime = t;
 
         /* Flag time and speed update */
-        this.shader_LinearMeasure += dt * this.getRealSpeed();
+        this.shader_LinearMeasure -= dt * this.getRealSpeed();
         console.log(this.shader_LinearMeasure);
         this.vehicle.flag.flagShader.setUniformsValues({linearMeasure: this.shader_LinearMeasure});
     }
