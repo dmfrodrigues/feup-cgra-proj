@@ -9,6 +9,7 @@ uniform mat4 uNMatrix;
 varying vec2 vTextureCoord;
 
 uniform float linearMeasure;
+uniform float speed;
 
 uniform sampler2D uSampler;
 uniform sampler2D uSampler2;
@@ -25,7 +26,7 @@ void main() {
 	
 	vec3 increase = vec3(0,0,offset);
 
-	vec3 movingPos = aVertexPosition + 0.1 * increase;
+	vec3 movingPos = aVertexPosition + speed / 50.0 * increase;
 
 	if (aTextureCoord.x <= 0.01) movingPos = aVertexPosition;
 	
