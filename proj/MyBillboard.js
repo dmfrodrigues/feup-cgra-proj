@@ -6,8 +6,10 @@ class MyBillboard extends CGFobject
         
         this.base = new MyPlane(scene,20,0,1,0,1,true);
         this.leg  = new MyPlane(scene,20,0,1,0,1,true);
+        this.bar  = new MyPlane(scene,20,0,1,0,1,true);
 
-        this.initTextures();        
+        this.initTextures();
+        this.initShaders();        
     }
     initTextures()
     {
@@ -30,6 +32,11 @@ class MyBillboard extends CGFobject
         this.baseAppear.setShininess(120);
         this.baseAppear.setTexture(this.baseTexture);
         this.baseAppear.setTextureWrap('REPEAT','REPEAT');
+    }
+    initShaders()
+    {
+        this.barShader = new CGFshader(this.scene.gl,"shaders/bar.vert","shaders/bar.frag");
+        this.scene.setActiveShader(this.barShader);
     }
     display()
     {
@@ -54,6 +61,13 @@ class MyBillboard extends CGFobject
                 this.scene.translate(-9,0,0);
                 this.legAppear.apply();
                 this.leg.display();
+            }
+            this.scene.popMatrix();
+            this.scene.pushMatrix();
+            {
+                this.scene.translate(0,1.3,0.001);
+                this.scene.scale(1.5,0.2,1);
+                this.bar.display();
             }
             this.scene.popMatrix();
         }
