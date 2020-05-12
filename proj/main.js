@@ -18,6 +18,8 @@ serialInclude(
         'MyQuad.js',
         'MyTerrain.js',
         'MyPlane.js',
+        'MyBillboard.js',
+        
 main=function()
 {
     var app = new CGFapplication(document.body);

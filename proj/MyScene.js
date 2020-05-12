@@ -31,6 +31,7 @@ class MyScene extends CGFscene {
         this.sphere = new MySphere(this,50,25);
         this.cubeMap = new MyCubeMap(this);
         this.terrain = new MyTerrain(this);
+        this.billboard = new MyBillboard(this);
         this.supplies = [];
         this.NUMBER_SUPPLIES = 5;
         this.nSuppliesDelivered = 0;
@@ -46,6 +47,7 @@ class MyScene extends CGFscene {
         this.displayVehicle = true;
         this.displayCubeMap = true;
         this.displayTerrain = true;
+        this.displayBillboard = true;
         this.speedFactor    = 1.0;
         this.scaleFactor    = 1.0;
 
@@ -173,6 +175,8 @@ class MyScene extends CGFscene {
         if (this.displayTerrain) this.terrain.display();
         
         this.setActiveShader(this.defaultShader);
+
+        if (this.displayBillboard) this.billboard.display();
 
         // ---- END Primitive drawing section
     }
