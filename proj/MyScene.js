@@ -128,6 +128,10 @@ class MyScene extends CGFscene {
 
         this.cameras[2].setPosition(this.vehicle.getBehindCameraPos());
         this.cameras[2].setTarget(this.vehicle.getCameraTarget());
+
+        //Update number of supplied delivered
+        this.billboard.barShader.setUniformsValues({maxSupplies: this.NUMBER_SUPPLIES});
+        this.billboard.barShader.setUniformsValues({numSupplies: this.nSuppliesDelivered});
     }
     //called when user interacts with the cube map texture dropdown
     updateCubeMapTexture()
@@ -177,6 +181,7 @@ class MyScene extends CGFscene {
         this.setActiveShader(this.defaultShader);
 
         if (this.displayBillboard) this.billboard.display();
+        this.setActiveShader(this.defaultShader);
 
         // ---- END Primitive drawing section
     }

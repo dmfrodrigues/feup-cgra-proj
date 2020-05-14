@@ -36,13 +36,12 @@ class MyBillboard extends CGFobject
     initShaders()
     {
         this.barShader = new CGFshader(this.scene.gl,"shaders/bar.vert","shaders/bar.frag");
-        this.scene.setActiveShader(this.barShader);
     }
     display()
     {
         this.scene.pushMatrix();
         {
-            this.scene.translate(0,0,-10);
+            this.scene.translate(0,0.3,-10);
             this.scene.pushMatrix();
             {
                 
@@ -67,6 +66,7 @@ class MyBillboard extends CGFobject
             {
                 this.scene.translate(0,1.3,0.001);
                 this.scene.scale(1.5,0.2,1);
+                this.scene.setActiveShader(this.barShader);
                 this.bar.display();
             }
             this.scene.popMatrix();
