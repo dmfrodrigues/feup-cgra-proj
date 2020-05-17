@@ -88,18 +88,17 @@ class AirshipMotor extends CGFobject {
     reset(){
         this.angle = 0;
         this.angle_speed = 0;
-        this.update_prevtime = 0;
     }
     setSpeed(angspeed){
         this.angle_speed = angspeed;
     }
     update(){
         let t = Date.now()/1000;
-        let Dt = t - this.update_prevtime;
+        if(typeof this.update.prevtime == 'undefined') this.update.prevtime = t;
+        let Dt = t - this.update.prevtime;
+        this.update.prevtime = t;
 
         this.angle += Dt * this.angle_speed;
-
-        this.update_prevtime = t;
     }
     display() {
         this.update();
@@ -213,6 +212,9 @@ class Gondola extends CGFobject {
             this.indices.push(N-1, N-3, N-4);
             this.indices.push(N-4, N-2, N-1);
         }
+        /* Translate by (0, -this.height/2, 0) */
+        for(let i = 1; i < this.vertices.length; i += 3) this.vertices[i] -= this.height/2;
+
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
@@ -229,7 +231,6 @@ class Gondola extends CGFobject {
     }
     display() {
         this.scene.pushMatrix();{
-            this.scene.translate(0, -this.height/2, 0);
             this.materials.gondola.apply();
             super.display();
         }this.scene.popMatrix();
