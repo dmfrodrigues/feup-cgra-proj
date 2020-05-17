@@ -118,8 +118,8 @@ class MyVehicle extends CGFobject {
         }
         /* Azimuth, elevation update */ {
             this.setAzimuth  (this.dir.az.theta + this.v * this.dir.az.curvature * dt);
-            this.setElevation(this.dir.el.theta + this.v * this.dir.el.curvature * dt);
-            this.setElevation(Math.min(Math.max(this.dir.el.theta, -this.dir.el.MAX_THETA), this.dir.el.MAX_THETA));
+            let el =          this.dir.el.theta + this.v * this.dir.el.curvature * dt;
+            this.setElevation(Math.min(Math.max(el, -this.dir.el.MAX_THETA), this.dir.el.MAX_THETA));
         }
         /* Position update */ {
             let v = this.getSpeedVector();
