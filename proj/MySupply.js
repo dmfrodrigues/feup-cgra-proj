@@ -20,16 +20,8 @@ class MySupply extends CGFobject {
     }
     reset(){
         this.state = this.SupplyStates.INACTIVE;
-        this.pos = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
-        this.vel = {
-            x: 0,
-            y: 0,
-            z: 0
-        };
+        this.pos = vec3.fromValues(0, 0, 0);
+        this.vel = vec3.fromValues(0, 0, 0);
         this.update_prevtime = undefined;
     }
     initObjects(){
@@ -45,33 +37,27 @@ class MySupply extends CGFobject {
         this.vel = vel;
     }
     land(){
-        return (this.pos.y < 0);
+        return (this.pos[1] < 0);
     }
     update(t){
         t = t/1000;
 
         if(this.update_prevtime == undefined) this.update_prevtime = t;
         let Dt = t - this.update_prevtime;
+        this.update_prevtime = t;
         if(this.state == this.SupplyStates.FALLING){
             //Gravity
-            this.vel.y -= this.PHYSICS.GRAVITIC_ACCELERATION * Dt;
+            this.vel[1] -= this.PHYSICS.GRAVITIC_ACCELERATION * Dt;
             // Drag
-            this.vel.x *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
-            this.vel.y *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
-            this.vel.z *= (1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
+            vec3.scale(this.vel, this.vel, 1 - this.PHYSICS.DRAG_COEFFICIENT * Dt);
             // Update positions
-            this.pos.x += this.vel.x * Dt;
-            this.pos.y += this.vel.y * Dt;
-            this.pos.z += this.vel.z * Dt;
-            this.update_prevtime = t;
+            let dr = vec3.create();
+            vec3.scale(dr, this.vel, Dt);
+            vec3.add(this.pos, this.pos, dr);
 
             if(this.land()){
-                this.pos.y = 0;
-                this.vel = {
-                    x: 0,
-                    y: 0,
-                    z: 0
-                };
+                this.pos[1] = 0;
+                this.vel = vec3.fromValues(0, 0, 0);
                 this.state = this.SupplyStates.LANDED;
             }
         }
@@ -79,7 +65,7 @@ class MySupply extends CGFobject {
     display(){
         if(this.obj[this.state] != undefined){
             this.scene.pushMatrix(); {
-                this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
+                this.scene.translate(this.pos[0], this.pos[1], this.pos[2]);
                 this.obj[this.state].display();
             } this.scene.popMatrix();
         }

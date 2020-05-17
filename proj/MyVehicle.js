@@ -9,86 +9,97 @@ class MyVehicle extends CGFobject {
             DRAG_COEFFICIENT: 0.1
         }
         this.scene = scene;
-        this.reset();
-        this.shader_LinearMeasure = 0;
-        this.vehicle = new Airship(this.scene);
-    }
-    reset(){
         this.dir = {
             az: {
                 theta: 0,
+                sin: 0,
+                cos: 1,
                 curvature: 0
             },
             el: {
                 theta: 0,
+                sin: 0,
+                cos: 1,
                 curvature: 0,
                 MAX_THETA: 20*Math.PI/180
             }
         };
-        this.pos   = {
-            x: 0,
-            y: 10,
-            z: 0,
-            v: 0,
-            a: 0
-        };
+        this.vehicle = new Airship(this.scene);
+        this.shader_LinearMeasure = 0;
+        this.reset();
+    }
+    reset(){
+        this.setAzimuth(0);
+        this.setAzimuthCurvature(0);
+        this.setElevation(0);
+        this.setElevationCurvature(0);
+        this.pos = vec3.fromValues(0, 10, 0);
+        this.v = 0;
+        this.a = 0;
         this.speedFactor = 1.0;
         this.scaleFactor = 1.0;
     }
     // Setters
     setSpeedFactor(speedFactor){ this.speedFactor = speedFactor; }
     setScaleFactor(scaleFactor){ this.scaleFactor = scaleFactor; }
+    setAzimuth           (k){
+        if(this.dir.az.theta != k){
+            this.dir.az.theta   = k;
+            this.dir.az.sin     = Math.sin(k);
+            this.dir.az.cos     = Math.cos(k);
+        }
+    }
     setAzimuthCurvature  (k){ this.dir.az.curvature = k; this.vehicle.setRudderAngle(this.dir.az.curvature/2); }
+    setElevation         (k){
+        if(this.dir.el.theta != k){
+            this.dir.el.theta   = k;
+            this.dir.el.sin     = Math.sin(k);
+            this.dir.el.cos     = Math.cos(k);
+        }
+    }
     setElevationCurvature(k){
         this.dir.el.curvature = k;
         this.vehicle.setElevatorAngle(-this.dir.el.curvature/2);
     }
     turn(val){ this.setAzimuthCurvature(val); }
     elevate(val){ this.setElevationCurvature(val); }
-    setSpeed(speed){ this.pos.v = speed; this.vehicle.setSpeed(this.getRealSpeed()); }
-    level(){ this.dir.el.theta = 0; }
-    setAcceleration(a){ this.pos.a = a; }
+    setSpeed(speed){ this.v = speed; this.vehicle.setSpeed(this.getRealSpeed()); }
+    level(){ this.setElevation(0); }
+    setAcceleration(a){ this.a = a; }
     accelerate(val){ this.setAcceleration(val); }
     // Getters
-    getRealSpeed(){ return this.pos.v * this.speedFactor; }
+    getRealSpeed(){ return this.v * this.speedFactor; }
     getDropPos(){
-        return {
-            x: this.pos.x,
-            y: this.pos.y-1, 
-            z: this.pos.z
-        };
+        let ret = vec3.fromValues(0, -1, 0);
+        return vec3.add(ret, this.pos, ret);
     }
     getAboveCameraPos(){
-        let ret = {
-            x: this.pos.x-20*Math.sin(this.dir.az.theta), 
-            y: this.pos.y+6, 
-            z: this.pos.z-20*Math.cos(this.dir.az.theta)
-        };
-        return vec3.fromValues(ret.x, ret.y, ret.z);
+        let ret = vec3.fromValues(
+            -20*this.dir.az.sin,
+            +6,
+            -20*this.dir.az.cos
+        );
+        return vec3.add(ret, this.pos, ret);
     }
     getBehindCameraPos(){
-        let ret = {
-            x: this.pos.x-6 * Math.cos(this.dir.el.theta) * Math.sin(this.dir.az.theta), 
-            y: this.pos.y-6 * Math.sin(this.dir.el.theta), 
-            z: this.pos.z-6 * Math.cos(this.dir.el.theta) * Math.cos(this.dir.az.theta)
-        };
-        return vec3.fromValues(ret.x, ret.y, ret.z);
+        let ret = vec3.fromValues(
+            -6 * this.dir.el.cos * this.dir.az.sin,
+            -6 * this.dir.el.sin,
+            -6 * this.dir.el.cos * this.dir.az.cos
+        );
+        return vec3.add(ret, this.pos, ret);
     }
     getCameraTarget(){
-        let ret = {
-            x: this.pos.x, 
-            y: this.pos.y, 
-            z: this.pos.z
-        }; 
-        return vec3.fromValues(ret.x, ret.y, ret.z);
+        return vec3.clone(this.pos);
     }
     getSpeedVector(){
         let v = this.getRealSpeed();
-        return {
-            x: v * Math.cos(this.dir.el.theta) * Math.sin(this.dir.az.theta),
-            y: v * Math.sin(this.dir.el.theta),
-            z: v * Math.cos(this.dir.el.theta) * Math.cos(this.dir.az.theta)
-        };
+        let ret = vec3.fromValues(
+            this.dir.el.cos * this.dir.az.sin,
+            this.dir.el.sin,
+            this.dir.el.cos * this.dir.az.cos
+        );
+        return vec3.scale(ret, ret, v);
     }
     // Other functions
     update(t){
@@ -101,24 +112,20 @@ class MyVehicle extends CGFobject {
             this.update.prevtime = t;
         }
         /* Speed update */ {
-            this.setSpeed(this.pos.v + this.pos.a * dt);
+            this.setSpeed(this.v + this.a * dt);
             // Drag
-            this.setSpeed(this.pos.v*(1-this.PHYSICS.DRAG_COEFFICIENT*dt));
+            this.setSpeed(this.v*(1-this.PHYSICS.DRAG_COEFFICIENT*dt));
         }
         /* Azimuth, elevation update */ {
-            this.dir.az.theta += this.pos.v * this.dir.az.curvature * dt;
-            this.dir.el.theta += this.pos.v * this.dir.el.curvature * dt;
-            this.dir.el.theta = Math.min(Math.max(this.dir.el.theta, -this.dir.el.MAX_THETA), this.dir.el.MAX_THETA);
+            this.setAzimuth  (this.dir.az.theta + this.v * this.dir.az.curvature * dt);
+            this.setElevation(this.dir.el.theta + this.v * this.dir.el.curvature * dt);
+            this.setElevation(Math.min(Math.max(this.dir.el.theta, -this.dir.el.MAX_THETA), this.dir.el.MAX_THETA));
         }
         /* Position update */ {
             let v = this.getSpeedVector();
-            let dr = this.getRealSpeed() * dt;
-            let dx = v.x * dt;
-            let dy = v.y * dt;
-            let dz = v.z * dt;
-            this.pos.x += dx; 
-            this.pos.y += dy;
-            this.pos.z += dz;
+            let dr = vec3.create();
+            vec3.scale(dr, v, dt);
+            vec3.add(this.pos, this.pos, dr);
         }
 
         /* Flag time and speed update */
@@ -128,7 +135,7 @@ class MyVehicle extends CGFobject {
     }
     display() {
         this.scene.pushMatrix();{
-            this.scene.translate(this.pos.x, this.pos.y, this.pos.z);
+            this.scene.translate(this.pos[0], this.pos[1], this.pos[2]);
             this.scene.rotate(this.dir.az.theta, 0, 1, 0);
             this.scene.rotate(this.dir.el.theta, -1, 0, 0);
             
