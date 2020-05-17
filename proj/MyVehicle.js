@@ -10,7 +10,6 @@ class MyVehicle extends CGFobject {
         }
         this.scene = scene;
         this.reset();
-        this.update_prevtime = [];
         this.shader_LinearMeasure = 0;
         this.vehicle = new Airship(this.scene);
     }
