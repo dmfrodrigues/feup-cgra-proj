@@ -374,9 +374,6 @@ class AirshipFlag extends CGFobject
     display()
     {
         this.scene.pushMatrix();{
-            this.scene.translate(0,-0.23,-1.8);
-            this.scene.scale(0.3,0.3,1);
-            this.scene.rotate(Math.PI/2,0,1,0);
             this.scene.setActiveShader(this.flagShader);
             this.flagAppearance.apply();
             this.plane.display();
@@ -434,6 +431,12 @@ class Airship extends CGFobject {
             this.scene.translate(0, 0.08, -1);
             this.leftElevator.display();
         } this.scene.popMatrix();
-        this.flag.display();
+        this.scene.pushMatrix();{
+            this.scene.translate(0,-0.23,-1.8);
+            this.scene.scale(0.3,0.3,1);
+            this.scene.rotate(Math.PI/2,0,1,0);
+            this.flag.display(); 
+        } this.scene.popMatrix();
+        
     }
 }
