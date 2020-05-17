@@ -97,8 +97,9 @@ class MyVehicle extends CGFobject {
         t /= 1000;
         /* Time */
         let dt; {
-            if(this.update_prevtime == []) this.update_prevtime = t;
-            dt = t - this.update_prevtime;
+            if(typeof this.update.prevtime == 'undefined') this.update.prevtime = t;
+            dt = t - this.update.prevtime;
+            this.update.prevtime = t;
         }
         /* Speed update */ {
             this.setSpeed(this.pos.v + this.pos.a * dt);
@@ -120,8 +121,6 @@ class MyVehicle extends CGFobject {
             this.pos.y += dy;
             this.pos.z += dz;
         }
-        /* Update previous time */
-        this.update_prevtime = t;
 
         /* Flag time and speed update */
         this.shader_LinearMeasure -= dt * this.getRealSpeed();
