@@ -25,10 +25,10 @@ class MyScene extends CGFscene {
 
         //Initialize scene objects
         this.axis = new CGFaxis(this);
-        this.incompleteSphere = new MySphere(this, 16, 8);
+        this.incompleteSphere = new MySphere(this, 16, 8, vec3.fromValues(1, 1, 1));
         this.cylinder = new MyCylinder(this, 50);
         this.vehicle = new MyVehicle(this);
-        this.sphere = new MySphere(this,50,25);
+        this.sphere = new MySphere(this,50,25, vec3.fromValues(1, 1, 1));
         this.cubeMap = new MyCubeMap(this);
         this.terrain = new MyTerrain(this);
         this.billboard = new MyBillboard(this);

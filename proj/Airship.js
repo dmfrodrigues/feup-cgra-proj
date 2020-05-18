@@ -8,7 +8,7 @@ class AirshipBody extends CGFobject {
         this.initMaterials();
     }
     initObjects(){
-        this.body = new MySphere(this.scene, 12, 50);
+        this.body = new MySphere(this.scene, 12, 50, vec3.fromValues(this.radius, this.length/2, this.radius));
     }
     initMaterials(){
         const BODY_PATH = 'images/airship-body.png';
@@ -24,7 +24,6 @@ class AirshipBody extends CGFobject {
     }
     display() {
         this.scene.pushMatrix();{
-            this.scene.scale(this.radius, this.radius, this.length/2);
             this.scene.rotate(180*Math.PI/180, 0, 0, 1);
             this.scene.rotate(90*Math.PI/180, 1, 0, 0);
             this.materials.body.apply();
@@ -54,10 +53,10 @@ class AirshipMotor extends CGFobject {
 
         const BLADE_SLICES = 10;
 
-        this.motor   = new MySphere(this.scene, SLICES, STACKS);
-        this.axis    = new MySphere(this.scene, SLICES, STACKS);
-        this.blade1  = new MySphere(this.scene, BLADE_SLICES, STACKS);
-        this.blade2  = new MySphere(this.scene, BLADE_SLICES, STACKS);
+        this.motor   = new MySphere(this.scene, SLICES, STACKS, vec3.fromValues(this.radius/3, this.length/2, this.radius/3));
+        this.axis    = new MySphere(this.scene, SLICES, STACKS, vec3.fromValues(0.2*this.radius, 0.13*this.radius, 0.2*this.radius));
+        this.blade1  = new MySphere(this.scene, BLADE_SLICES, STACKS, vec3.fromValues(0.09*this.radius, 0.6*this.radius, 0.03*this.radius));
+        this.blade2  = new MySphere(this.scene, BLADE_SLICES, STACKS, vec3.fromValues(0.09*this.radius, 0.6*this.radius, 0.03*this.radius));
     }
     initMaterials(){
         const metalPath = 'images/blades_texture.png';
@@ -104,7 +103,6 @@ class AirshipMotor extends CGFobject {
         this.update();
 
         this.scene.pushMatrix();{
-            this.scene.scale(this.radius/3, this.radius/3, this.length/2);
             this.scene.rotate(90*Math.PI/180, 1, 0, 0);
             this.materials.engine.apply();
             this.motor.display();
@@ -113,20 +111,17 @@ class AirshipMotor extends CGFobject {
             this.scene.rotate(this.angle, 0, 0, 1);
             this.scene.pushMatrix();{
                 this.scene.translate(0, 0, -this.length/2);
-                this.scene.scale(0.2*this.radius, 0.2*this.radius, 0.13*this.radius);
                 this.scene.rotate(90*Math.PI/180, 1, 0, 0);
                 this.materials.metal2.apply();
                 this.axis.display();
             }this.scene.popMatrix();
             this.scene.pushMatrix();{
                 this.scene.translate(0, 0.4*this.radius, -this.length/2);
-                this.scene.scale(0.09*this.radius, 0.6*this.radius, 0.03*this.radius);
                 this.materials.metal1.apply();
                 this.blade1.display();
             }this.scene.popMatrix();
             this.scene.pushMatrix();{
                 this.scene.translate(0, -0.4*this.radius, -this.length/2);
-                this.scene.scale(0.09*this.radius, 0.6*this.radius, 0.03*this.radius);
                 this.materials.metal1.apply();
                 this.blade2.display();
             }this.scene.popMatrix();
@@ -255,7 +250,6 @@ class AirshipGondola extends CGFobject {
         const stacks = 20;
 
         this.gondola = new Gondola(this.scene, this.length, this.radius, this.height);
-        this.sphere  = new MySphere(this.scene, SLICES, stacks);
         this.motor   = new AirshipMotor(this.scene, 0.2*this.length, 0.7*this.radius);
     }
     display() {
