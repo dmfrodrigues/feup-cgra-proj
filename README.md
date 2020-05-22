@@ -17,6 +17,7 @@
 - `W`/`S` to propell forward/backwards
 - `A`/`D` to turn the rudders to the left/right, making the airship turn to the left/right
 - `P` to turn on autopilot (flies in a circle)
+- `R` to turn off autopilot (goes back to initial position with no speed)
 - `L` to drop supply (up to 5 supplies)
 - `↑`/`↓` to raise/lower the elevators, making the airship turn up/down
 - `C` to change views:
