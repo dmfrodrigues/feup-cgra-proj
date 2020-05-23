@@ -348,6 +348,7 @@ class AirshipFlag extends CGFobject
         super(scene);
         this.scene = scene;
         this.plane = new MyPlane(this.scene,50,0,1,0,1,true);
+        this.wire = new MyCylinder(this.scene,30);
         this.init();
     }
     init()
@@ -368,6 +369,22 @@ class AirshipFlag extends CGFobject
     display()
     {
         this.scene.pushMatrix();{
+            this.scene.translate(0,0.12,-2.265);
+            this.scene.rotate(Math.PI/4 + Math.PI/6,1,0,0);
+            this.scene.scale(0.005,1,0.005);
+            this.wire.display();
+        }this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.rotate(Math.PI,0,1,0);
+            this.scene.translate(0,-0.37,1.3);
+            this.scene.rotate(Math.PI/4 + Math.PI/6,1,0,0);
+            this.scene.scale(0.005,1,0.005);
+            this.wire.display();
+        }this.scene.popMatrix();
+        this.scene.pushMatrix();{
+            this.scene.translate(0,0.005,-2.76);
+            this.scene.scale(0.3,0.25,1);
+            this.scene.rotate(Math.PI/2,0,1,0);
             this.scene.setActiveShader(this.flagShader);
             this.flagAppearance.apply();
             this.plane.display();
@@ -426,9 +443,6 @@ class Airship extends CGFobject {
             this.leftElevator.display();
         } this.scene.popMatrix();
         this.scene.pushMatrix();{
-            this.scene.translate(0,-0.23,-1.8);
-            this.scene.scale(0.3,0.3,1);
-            this.scene.rotate(Math.PI/2,0,1,0);
             this.flag.display(); 
         } this.scene.popMatrix();
         
