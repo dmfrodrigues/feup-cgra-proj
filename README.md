@@ -13,6 +13,20 @@
 
 <a href="https://mechjm.github.io/trabalhoCGRA/proj/">Play</a>
 
+## Media
+
+| 📷 (1)                                                 | 📷 (2)                                                 |
+|--------------------------------------------------------|--------------------------------------------------------|
+| ![proj-t6g06-1.png](subs/screenshots/proj-t6g06-1.png) | ![proj-t6g06-2.png](subs/screenshots/proj-t6g06-2.png) |
+
+| 📷 (3)                                                 | 📷 (4)                                                 |
+|--------------------------------------------------------|--------------------------------------------------------|
+| ![proj-t6g06-3.png](subs/screenshots/proj-t6g06-3.png) | ![proj-t6g06-4.png](subs/screenshots/proj-t6g06-4.png) |
+
+| 📷 (5)                                                 | 📷 (6)                                                 |
+|--------------------------------------------------------|--------------------------------------------------------|
+| ![proj-t6g06-5.png](subs/screenshots/proj-t6g06-5.png) | ![proj-t6g06-6.png](subs/screenshots/proj-t6g06-6.png) |
+
 ## Controls
 - `W`/`S` to propell forward/backwards
 - `A`/`D` to turn the rudders to the left/right, making the airship turn to the left/right
