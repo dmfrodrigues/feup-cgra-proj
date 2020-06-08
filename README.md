@@ -1,6 +1,6 @@
 # CGRA project
 
-<button onclick="location.href = 'mechjm.github.io/trabalhoCGRA/proj/';">Play</button>
+[**Play**](https://mechjm.github.io/trabalhoCGRA/proj/)
 
 - **Project name:** CGRA project
 - **Short description:** Graphic game where you control an airship
@@ -12,8 +12,6 @@
 - **Group members:**
     - [Diogo Miguel Ferreira Rodrigues](https://github.com/dmfrodrigues) ([dmfrodrigues2000@gmail.com](mailto:dmfrodrigues2000@gmail.com)/[diogo.rodrigues@fe.up.pt](mailto:diogo.rodrigues@fe.up.pt))
     - [João Matos](https://github.com/MechJM) ([up201703884@fe.up.pt](mailto:up201703884@fe.up.pt))
-
-<a href="https://mechjm.github.io/trabalhoCGRA/proj/">Play</a>
 
 ## Media
 
