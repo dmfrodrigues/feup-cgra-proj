@@ -1,5 +1,7 @@
 # CGRA project
 
+<button onclick="location.href = 'mechjm.github.io/trabalhoCGRA/proj/';">Play</button>
+
 - **Project name:** CGRA project
 - **Short description:** Graphic game where you control an airship
 - **Environment:** Browser
