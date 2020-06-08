@@ -33,6 +33,8 @@
 |------------------------------------------------------------------------------|------------------------------------------------------------------------------|
 | ![portefolio/proj-t6g06-1.png](subs/screenshots/portefolio/proj-t6g06-1.png) | ![portefolio/proj-t6g06-2.png](subs/screenshots/portefolio/proj-t6g06-2.png) |
 
+![presentation.gif](subs/gifs/presentation.gif)
+
 ## Controls
 - `W`/`S` to propell forward/backwards
 - `A`/`D` to turn the rudders to the left/right, making the airship turn to the left/right
