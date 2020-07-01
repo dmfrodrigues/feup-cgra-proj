@@ -57,3 +57,13 @@
 - [x] Supplies are subject to linear drag
 - [x] The airship is subject to linear drag
 - [x] Change cameras
+
+## License
+
+© 2020 João Matos, Diogo Rodrigues
+
+All files are licensed under [GNU General Public License v3](LICENSE), to the exception of:
+- [WebCGF](https://paginas.fe.up.pt/~ruirodrig/pub/sw/webcgf/docs/) library made available in [`lib`](lib)
+- `.pdf` files authored by the lecturers
+
+The files not authored by us are presented as a fundamental complement to the presented solutions, and are made available under *fair use for education*.
