@@ -2,7 +2,7 @@
 
 ![Uptime/week](https://badgen.net/uptime-robot/week/m785411301-8ac02474af1e23fb8fa50a52)
 
-[**Play**](https://mechjm.github.io/trabalhoCGRA/proj/)
+[**Play**](https://matosjoaops.github.io/trabalhoCGRA/proj/)
 
 - **Project name:** CGRA project
 - **Short description:** Graphic game where you control an airship
